@@ -26,8 +26,12 @@ Helper: `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/squint.py"` (`sq`). Arguments: `
    If this period's files already exist and are under 7 days old, ask whether to redo them or only
    refresh what changed. In non-interactive runs, refresh what changed. With `--force` in the
    arguments, always run the scouts and refresh every requested platform in place, whatever its age.
-2. **Scout in parallel.** Platforms come from `$ARGUMENTS`, or default to `web, ios, android, branding`.
-   Spawn one `trend-scout` agent per platform, all in one message. Give each:
+2. **Scout in parallel.** Platforms are exactly the comma list in `$ARGUMENTS` (for example `branding`
+   means only branding). Only when no platform is named, use `web, ios, android, branding`. Ignore
+   `update_in_place` when choosing platforms; it only tells you which files to refresh.
+   Spawn one `trend-scout` agent per platform, all in one message, **in the foreground**
+   (`run_in_background: false`). Wait for every scout before going on: in non-interactive runs (`claude
+   -p`, CI) the session ends with your turn, which kills background agents. Give each:
    platform, period, today's date, output path, previous file path (or none), and the absolute paths
    of FORMAT.md and sources.md. For platforms listed in `update_in_place`, say explicitly that this is a
    same-period refresh of the existing file. If agents are unavailable, do the platforms one by one

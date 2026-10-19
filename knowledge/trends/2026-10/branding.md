@@ -1,15 +1,15 @@
 ---
 platform: branding
 period: 2026-10
-researched_at: 2026-10-18
+researched_at: 2026-10-19
 previous: null
-sources: 66
+sources: 71
 ---
 
 # Branding & positioning — trends · October 2026
 
 ## TL;DR
-- **Evolve, don't erase.** The big 2026 rebrands (Coca-Cola, KFC, Instagram, McLaren) amplified assets people already recognised. Equity-erasing resets got punished, most visibly Cracker Barrel's logo reversal in 2025. [13][16][17][18][21]
+- **Evolve, don't erase.** The big 2026 rebrands (Coca-Cola, KFC, Instagram, McLaren, Poetry Foundation) amplified assets people already recognised. Equity-erasing resets got punished, most visibly Cracker Barrel's logo reversal in 2025. [13][16][17][18][21][70]
 - **AI is why companies rebrand, not what they say.** AI pivots are driving masterbrand consolidation and renames (Intuit, Calendly, Pleo, Freepik→Magnific). Meanwhile 50% of US consumers prefer brands that avoid GenAI in consumer-facing content, so lead with outcomes, not "AI-powered". [22][24][26][27][35][36]
 - **Proof-of-human is a brand asset.** Examples: film-shot campaigns, hand-made idents, process content, and imperfect "just-not-quite-right" craft (Canva calls 2026 "Imperfect by Design"). [9][11][12][33]
 - **Custom type is now the identity's backbone.** Nearly every major 2026 system shipped a bespoke family, often with mono or handwriting cuts. [17][22][26][54]
@@ -36,13 +36,14 @@ sources: 66
   - KFC (Jun 2026, JKR). Bucket as framing system; Creative Review called it "doubling down".
   - Instagram (Aug 2026). First refresh in 10+ years: bolder semi-script, gradient used more subtly.
   - McLaren (Sep 2026). Archive-derived wordmark; Speedmark, papaya and Speedy Kiwi kept; some fans called it bland.
+  - Poetry Foundation and Poetry magazine (announced Sep 28, 2026, Pentagram). Reworked Pegasus, wider palette, bolder type.
   - Counter-example: Cracker Barrel (Aug 2025) dropped its "Old Timer" and reverted within about a week. YouGov: 76% of aware respondents preferred the old logo. Fast Company's designer panel still listed it among 2025's most noteworthy rebrands, "for better or worse".
   - Brand New's 2026 "big stories" are mostly evolutions of this kind (Coca-Cola, KFC, Intuit, Threads, Sam's Club).
-  - [13][16][17][18][21][7][8][23]
+  - [13][16][17][18][21][7][8][23][70]
 - **Fits:** any brand with 3+ years of recognition, consumer apps with a known icon, scale-ups that are refreshing rather than pivoting.
 - **Avoid when:** the old equity is actively toxic or misleading. Also when the business has genuinely changed category, though even then keep one bridge asset (Bentley modernised its Winged B "without pulling a Jaguar"). [20]
 - **Implement:** Run a distinctive-asset audit (recognition × uniqueness) before any sketching. Keep the top 1–2 assets and redraw them for screens: thicker strokes, simplified details, motion-ready. Make the refresh about the system (type, layout, motion) more than the mark. Pre-test with existing users, and stage the rollout across touchpoints.
-- **Sources:** [13], [16], [17], [18], [21], [7], [8], [23], [20]
+- **Sources:** [13], [16], [17], [18], [21], [7], [8], [23], [20], [70]
 
 ### brand-masterbrand-platform — Masterbrand consolidation & renames for the AI-platform era
 - **Status:** rising
@@ -159,6 +160,7 @@ sources: 66
   - Pantone 2026: 11-4201 Cloud Dancer, a soft white and the first white Color of the Year since 1999.
   - WGSN × Coloro 2026: Transformative Teal (092-37-14). For 2027: Luminous Blue.
   - Pinterest Palette 2026: Persimmon, Cool Blue, Jade, Plum Noir, Wasabi. Plum Noir saves are the fastest-rising.
+  - Pantone's 2027 Color of the Year is not yet announced (usually December). Its Spring/Summer 2027 NYFW forecast (Sep 2026) mixes bold reds, oranges and corals with pale herbal tones. [71]
 - **Seen in:**
   - Samsara (Aug 2026, Base Design): "ditched tech blue for construction yellow".
   - Pleo (2026): a cooler, brighter pink against category greys and blues.
@@ -172,7 +174,7 @@ sources: 66
   - Plot the top 10 competitors' primary hues and pick one far from the cluster.
   - Define a neutral base (warm off-white, Cloud Dancer-adjacent, or deep ink), one signal colour and 3–5 supporting tones.
   - Test the signal colour in the app icon at small size and in Apple's tinted and clear modes.
-- **Sources:** [51], [26], [25], [19], [1], [2], [3], [4], [5], [63]
+- **Sources:** [51], [26], [25], [19], [1], [2], [3], [4], [5], [63], [71]
 
 ### brand-archive-nostalgia — Archive-mined nostalgia
 - **Status:** rising
@@ -312,15 +314,16 @@ sources: 66
 - **Amorphous gradient "AI orb" marks** — glowing cores, fading gradients and rotating "blossoms". The pattern is so common that LogoLounge catalogues it as a trend ("Faders"), and Fast Company mocked 2025's AI "butthole" logos. It no longer differentiates an AI product. [6][9]
 - **"AI-powered" as the headline** — audiences discount it and buyers ask for outcomes. [35][36][61]
 - **Undisclosed, fully AI-generated campaign visuals** — McDonald's Netherlands pulled its AI Christmas ad within days (Dec 2025), and Coca-Cola's AI Christmas ads drew backlash. [39][11]
-- **Equity-erasing "blanding"** — Cracker Barrel's plain wordmark was reversed within about a week (2025). McLaren's quieter wordmark was criticised as bland (2026). Apple Music's colourless icon test drew immediate backlash, and Creative Bloq asked "I thought we were done with minimalism?" (Oct 2026). [21][7][56]
+- **Equity-erasing "blanding"** — Cracker Barrel's plain wordmark was reversed within about a week (2025). McLaren's quieter wordmark was criticised as bland (2026). Apple Music's colourless black-and-white icon (iOS 27.2 beta 4, Oct 13) drew immediate backlash, and Creative Bloq asked "I thought we were done with minimalism?" (Oct 2026). [21][7][56][67]
 - **Default tech blue and neon SaaS gradients** — Samsara swapped tech blue for construction yellow, Calendly replaced neon with pastels, and Pleo sets its pink against category greys and blues. [51][25][26]
 - **Generic challenger-fintech kit** (geometric sans, flat vector people, teal) — Kuda moved "on from its challenger days" with hand-drawn illustration. [53]
 - **Static PDF brand books** — Coca-Cola's Fizzion was premised on rules machines can't read; guidelines are becoming StyleIDs and brand brains. [15][14][45]
 - **Baked-in skeuomorphic icon effects and realistic 3D icon objects** — Apple's glass system asks for flat, frontal, layered artwork, and drop shadows and bevels now duplicate the system material. [63]
 
 ## Watchlist — verify next month
-- Pantone Color of the Year 2027. Expected early December 2026; not announced as of 2026-10-18 (unverified).
-- Apple Music's black-on-white icon is still an iOS 27.2 beta change and may be reverted before release (unverified).
+- Pantone Color of the Year 2027. Expected early December 2026; still not announced as of 2026-10-19 (unverified).
+- Apple Music's black-on-white icon is still in iOS 27.2 beta 4 (Oct 13) as of 2026-10-19; Apple could still revert before release (early). [67]
+- Brisbane 2032 Olympic emblem (pink cockatoo crest styled as a flame). It leaked via the official YouTube channel about 72 hours early (Oct 3) and was unveiled around Oct 6; organisers report an overwhelmingly positive response, but all coverage is organiser-quoted wire copy with no independent design critics yet. This corrects an earlier note that dated the release to Oct 15 (early). [68][69]
 - Fairplay reportedly asked the FTC on Sep 30, 2026 to investigate Meta's Jolly mascot. Aggregator-sourced; outcome unknown (unverified).
 - Fast Company piece "Big tech is cutewashing its AI agents". Headline seen; text and date not verified (unverified).
 - Instagram 2026 wordmark agency credit (Koto, with type studio MCKL). Single source (unverified).
@@ -328,13 +331,12 @@ sources: 66
 - Apple AI-generated App Store tags (iOS 26) and OCR indexing of screenshot captions. Practitioner reports; no Apple documentation found (unverified).
 - iOS 27 icon refinements, "Icon Composer 2" and a transparency slider. Single source (unverified).
 - WWDC26 CPP features (Asset Library, preview tool, combined review) "fall 2026". Confirm they have shipped (early).
-- Brisbane 2032 Olympic logos released 2026-10-15, after an earlier leak. Reaction pending (early).
 - Paramount Skydance / WBD naming and house-of-brands strategy (early).
 - Galway City Council (Sep 2026) and Edinburgh Airport (Oct 2026) identity backlash. Local or single-source coverage (unverified).
 - "Human-made" certification labels: 8+ competing schemes, no standard yet. Watch for consolidation (early).
 - AI-assisted illustration systems inside identities (Untold by The Working Assembly). Watch reception and copycats (early).
 - Gartner's 2024 forecast of a 25% drop in traditional search volume by 2026. No measured confirmation found (unverified).
-- Coverage gap: no 2026 tech/AI identity launches verified for Collins, Wolff Olins or DesignStudio, and no Design Week 2026 tech rebrand items reviewed. The web-search budget ran out, so check these next month (unverified).
+- Coverage gap: no 2026 tech/AI identity launches verified for Collins, Wolff Olins or DesignStudio, and no Design Week 2026 tech rebrand items reviewed. This refresh's search did not close the gap, so check it next month (unverified).
 
 ## Sources
 1. [Pantone Color of the Year 2026: Cloud Dancer (PANTONE 11-4201)](https://www.pantone.com/color-of-the-year/2026) — Pantone, 2025-12-04
@@ -403,3 +405,8 @@ sources: 66
 64. [App Store custom product pages: how to use them in 2026](https://adapty.io/blog/custom-product-pages-app-store/) — Adapty, 2026-07-30
 65. [ASO Stack Redux 2026](https://phiture.com/asostack/aso-stack-redux-2026-article/) — Phiture, 2026-02-05
 66. [The Latest: Q2 2026](https://google.play/the-latest/2026-q2/) — Google Play, 2026-07-22
+67. [iOS 27.2 Adds New Apple Music Icon](https://www.macrumors.com/2026/10/13/ios-27-2-apple-music-icon/) — MacRumors, 2026-10-13
+68. [Olympics-Brisbane 2032 logos accidentally revealed by official YouTube channel](https://www.thestar.com.my/sport/others/2026/10/03/olympics-brisbane-2032-logos-accidentally-revealed-by-official-youtube-channel) — The Star (Malaysia), 2026-10-03
+69. ['Gobsmacked': Olympic emblem revealed](https://www.indailysa.com.au/news/just-in/2026/10/06/brisbane-2032-olympics-emblem) — InDaily (AAP), 2026-10-06
+70. [The Poetry Foundation and Poetry Magazine Launch a New Brand Identity](https://www.poetryfoundation.org/articles/1829637/the-poetry-foundation-and-poetry-magazine-launch-a-new-brand-identity) — Poetry Foundation, 2026-09-28
+71. [Pantone NYFW spring/summer 2027 color trend report: the top 10 colors](https://fashionunited.com/news/fashion/pantone-nyfw-spring-summer-2027-color-trend-report-the-top-10-colors/2026092174743) — FashionUnited, 2026-09-21

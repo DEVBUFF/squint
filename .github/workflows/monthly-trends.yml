@@ -35,13 +35,14 @@ jobs:
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          show_full_output: true  # TEMP: diagnostics
           prompt: |
             /squint:research ${{ inputs.platforms || 'web,ios,android,branding' }} --repo --period ${{ env.PERIOD }}
             This is a non-interactive CI run inside the plugin's own repository: never ask questions,
             refresh whatever is missing or stale, and only write under knowledge/trends/.
           claude_args: |
             --plugin-dir .
-            --allowedTools "Read,Write,Edit,Glob,Grep,WebSearch,WebFetch,Agent,Bash(python3 *),mcp__plugin_squint_exa__web_search_exa,mcp__plugin_squint_exa__web_fetch_exa"
+            --allowedTools "Read,Write,Edit,Glob,Grep,WebSearch,WebFetch,Agent,Task,Skill,TodoWrite,Bash(python3 *),mcp__plugin_squint_exa__web_search_exa,mcp__plugin_squint_exa__web_fetch_exa"
 
       - name: Bump plugin version when the knowledge changed
         run: |

@@ -26,6 +26,12 @@ FORMAT.md path · sources.md path.
 5. Write the file to the output path in exactly the format FORMAT.md defines. Use 8–15 trends,
    12+ sources and a Platform baseline that a team shipping today must know.
 
+**Same-period refresh.** When the previous file *is* the output path, you are refreshing this month's
+file, not starting over. Keep verified content, ids and sources. Add what was published since its
+`researched_at`, try to resolve Watchlist items marked `unverified` (promote them or drop them), fix
+anything that turned out wrong, keep momentum relative to the last *different* period, and set
+`researched_at` to today.
+
 ## Rules
 - Never invent products, APIs, version numbers, dates or rebrands. If you can't verify something,
   it goes to Watchlist marked `unverified`.

@@ -259,12 +259,17 @@ def cmd_research(args):
         return
     target = base / period
     target.mkdir(parents=True, exist_ok=True)
-    prev = {}
+    prev, in_place = {}, []
     for plat, items in trend_files().items():
-        older = [i for i in items if i[0] < period] or [i for i in items if i[2] != str(target / f"{plat}.md")]
-        prev[plat] = older[0][2] if older else None
+        own = target / f"{plat}.md"
+        if own.exists():  # re-run within the same period: refresh the file in place
+            prev[plat] = str(own)
+            in_place.append(plat)
+            continue
+        cands = [i for i in items if i[0] <= period]  # newest first: same period elsewhere, then older
+        prev[plat] = cands[0][2] if cands else None
     out({"period": period, "target_dir": str(target), "format": str(KNOWLEDGE / "trends" / "FORMAT.md"),
-         "sources": str(KNOWLEDGE / "sources.md"), "previous": prev,
+         "sources": str(KNOWLEDGE / "sources.md"), "previous": prev, "update_in_place": in_place,
          "files_to_write": [str(target / f"{p}.md") for p in PLATFORMS] + [str(target / "summary.md")]})
 
 

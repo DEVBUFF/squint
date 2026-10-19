@@ -28,8 +28,9 @@ Helper: `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/squint.py"` (`sq`). Arguments: `
 2. **Scout in parallel.** Platforms come from `$ARGUMENTS`, or default to `web, ios, android, branding`.
    Spawn one `trend-scout` agent per platform, all in one message. Give each:
    platform, period, today's date, output path, previous file path (or none), and the absolute paths
-   of FORMAT.md and sources.md. If agents are unavailable, do the platforms one by one yourself with
-   the same instructions.
+   of FORMAT.md and sources.md. For platforms listed in `update_in_place`, say explicitly that this is a
+   same-period refresh of the existing file. If agents are unavailable, do the platforms one by one
+   yourself with the same instructions.
 3. **Check.** Run `sq check-trends <the written files>`. It verifies the front matter, sections,
    prefixed ids, status/momentum/sources fields and the source count. Also skim for invented products
    and undated sources. Make small fixes yourself. Send a scout back if its file is thin (fewer than 8 trends or fewer than 12 sources).

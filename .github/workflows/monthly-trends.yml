@@ -41,7 +41,7 @@ jobs:
             refresh whatever is missing or stale, and only write under knowledge/trends/.
           claude_args: |
             --plugin-dir .
-            --allowedTools "Read,Write,Edit,Glob,Grep,WebSearch,WebFetch,Agent,Bash(python3 *)"
+            --allowedTools "Read,Write,Edit,Glob,Grep,WebSearch,WebFetch,Agent,Bash(python3 *),mcp__plugin_squint_exa__web_search_exa,mcp__plugin_squint_exa__web_fetch_exa"
 
       - name: Bump plugin version when the knowledge changed
         run: |

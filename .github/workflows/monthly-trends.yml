@@ -21,10 +21,10 @@ jobs:
   research:
     runs-on: ubuntu-latest
     timeout-minutes: 90
-    env:
-      SQUINT_HOME: ${{ runner.temp }}/squint-home
     steps:
       - uses: actions/checkout@v5
+      - name: Isolated data dir
+        run: echo "SQUINT_HOME=$RUNNER_TEMP/squint-home" >> "$GITHUB_ENV"
 
       - name: Period
         run: echo "PERIOD=$(date -u +%Y-%m)" >> "$GITHUB_ENV"

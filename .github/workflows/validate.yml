@@ -8,10 +8,10 @@ on:
 jobs:
   validate:
     runs-on: ubuntu-latest
-    env:
-      SQUINT_HOME: ${{ runner.temp }}/squint-home
     steps:
       - uses: actions/checkout@v5
+      - name: Isolated data dir
+        run: echo "SQUINT_HOME=$RUNNER_TEMP/squint-home" >> "$GITHUB_ENV"
       - uses: actions/setup-node@v5
         with:
           node-version: 22

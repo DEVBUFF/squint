@@ -1,0 +1,31 @@
+# Maintainer tool: checks that the CLAUDE_CODE_OAUTH_TOKEN secret works, without printing it.
+name: Check Claude token
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Secret shape (the value is never printed)
+        env:
+          T: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+        run: |
+          echo "length: ${#T}"
+          case "$T" in sk-ant-oat01-*) echo "prefix: ok" ;; "") echo "prefix: secret is empty" ;; *) echo "prefix: unexpected" ;; esac
+          if printf '%s' "$T" | grep -q '[[:space:]]'; then echo "whitespace: present"; else echo "whitespace: none"; fi
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - name: Ask Claude for OK
+        env:
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+        run: |
+          npm install -g @anthropic-ai/claude-code >/dev/null 2>&1
+          claude -p "Reply with exactly: OK" 2>&1 | tail -5

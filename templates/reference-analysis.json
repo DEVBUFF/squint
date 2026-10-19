@@ -1,0 +1,29 @@
+{
+  "_doc": "Shape of one reference analysis saved with `squint.py annotate`. Batch file = {\"<ref id>\": <analysis>, ...}. Use \"skip\" instead of an object for images that carry no design signal. Keep values short and lowercase where an enum is listed; free text only in notes/signature_moves/like_why.",
+  "r_0123456789": {
+    "platform": "web | ios | android | brand | print | other",
+    "type": "landing | dashboard | app-screen | onboarding | paywall | component | logo | identity | typography | illustration | photo | packaging | motion | other",
+    "theme": "light | dark | mixed",
+    "mood": ["calm", "premium", "playful", "technical", "editorial", "warm", "bold", "minimal", "raw", "futuristic"],
+    "palette": ["#0E0E10", "#F4F1EA", "#D6FF3D"],
+    "palette_notes": "warm off-white + near-black, one acid accent used only for CTAs",
+    "typography": {
+      "style": "grotesk | neo-grotesk | geometric | humanist | serif | display-serif | mono | rounded | script | mixed",
+      "notes": "oversized tight-tracked headline, small mono labels"
+    },
+    "layout": {
+      "density": "airy | balanced | dense",
+      "grid": "centered | editorial | bento | asymmetric | split | list | cards | full-bleed",
+      "notes": "huge whitespace, single column hero"
+    },
+    "shape": {
+      "radius": "sharp | soft | round | pill",
+      "depth": "flat | subtle-shadow | glass | 3d | skeuo | grain"
+    },
+    "imagery": "photo | 3d | illustration | abstract | ui-only | type-only | none",
+    "motion_hint": "what motion the still implies, if any",
+    "signature_moves": ["one sharp sentence per distinctive, reusable move"],
+    "like_why": "best guess at what made the user save this",
+    "tags": ["fintech", "onboarding"]
+  }
+}

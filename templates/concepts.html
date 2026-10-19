@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Concepts — PROJECT</title>
+<!--
+  ART DIRECTOR CONCEPT BOARD — filled by /squint:audit.
+  How to fill:
+  - Replace every UPPERCASE placeholder. Delete sections you don't need.
+  - One <article class="rec" id="R#"> per recommendation that has a visual change.
+    "Before" = a real screenshot from screens/before/. "After" = an HTML/CSS mockup
+    built with the PROPOSED tokens inside a device frame (.frame-browser / .frame-iphone / .frame-android).
+  - Mockups are illustrations, not production code: keep them faithful to the real screen's
+    content and layout so the change is the only difference.
+  - Proposed fonts: add a Google Fonts <link> below and set --mock-font on the mockup.
+  - Directions (A/B/C) only when the visual identity changes.
+-->
+<style>
+  :root {
+    --bg: #f6f5f2; --surface: #ffffff; --ink: #141414; --muted: #6b6b6b; --line: #e3e1dc;
+    --accent: #3d5afe; --p0: #d93025; --p1: #e8710a; --p2: #b8a000; --p3: #5f6368;
+    --radius: 14px; --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --mono: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #111112; --surface: #1b1b1d; --ink: #f2f2f0; --muted: #9a9a9a; --line: #2c2c2f; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.55 var(--font); }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 48px 24px 120px; }
+  header.top { display: grid; gap: 12px; margin-bottom: 40px; }
+  .eyebrow { font: 12px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  h1 { font-size: clamp(32px, 5vw, 56px); line-height: 1.02; letter-spacing: -0.02em; margin: 0; }
+  h2 { font-size: 26px; letter-spacing: -0.01em; margin: 64px 0 20px; }
+  h3 { font-size: 19px; margin: 0; }
+  p { margin: 0 0 10px; }
+  .muted { color: var(--muted); }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { font: 12px/1 var(--mono); padding: 6px 9px; border: 1px solid var(--line); border-radius: 99px; background: var(--surface); }
+  .chip.p0 { color: #fff; background: var(--p0); border-color: var(--p0); }
+  .chip.p1 { color: #fff; background: var(--p1); border-color: var(--p1); }
+  .chip.p2 { color: #111; background: var(--p2); border-color: var(--p2); }
+  .chip.p3 { color: #fff; background: var(--p3); border-color: var(--p3); }
+  .chip.basis { background: transparent; }
+
+  /* scorecard */
+  .scores { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr)); gap: 12px; }
+  .score { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; }
+  .score b { font-size: 28px; letter-spacing: -0.02em; }
+  .bar { height: 6px; border-radius: 6px; background: var(--line); margin-top: 10px; overflow: hidden; }
+  .bar i { display: block; height: 100%; background: var(--ink); }
+
+  /* directions */
+  .directions { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 16px; }
+  .dir { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; display: grid; }
+  .dir .hero { padding: 28px 22px; min-height: 180px; display: grid; align-content: end; gap: 6px; }
+  .dir .body { padding: 18px 22px 22px; display: grid; gap: 12px; }
+  .swatches { display: flex; gap: 6px; flex-wrap: wrap; }
+  .sw { width: 52px; display: grid; gap: 4px; font: 10px/1.2 var(--mono); color: var(--muted); }
+  .sw i { height: 40px; border-radius: 8px; border: 1px solid rgba(0,0,0,.08); }
+
+  /* recommendations */
+  .rec { background: var(--surface); border: 1px solid var(--line); border-radius: calc(var(--radius) + 6px); padding: 24px; margin-bottom: 24px; scroll-margin-top: 24px; }
+  .rec-head { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .rec-head .id { font: 600 13px/1 var(--mono); color: var(--muted); margin-right: 8px; }
+  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+  @media (max-width: 860px) { .compare { grid-template-columns: 1fr; } }
+  @media (max-width: 560px) { .wrap { padding: 32px 16px 120px; } .rec { padding: 16px; } .why { grid-template-columns: 1fr; } }
+  .pane { display: grid; gap: 10px; justify-items: center; }
+  .pane > .label { justify-self: start; font: 12px/1 var(--mono); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+  .shot { max-width: 100%; border-radius: 10px; border: 1px solid var(--line); }
+  .why { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: 14px; margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 14px; }
+  .why b { display: block; font: 600 11px/1.4 var(--mono); text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin-bottom: 4px; }
+  label.pick { display: inline-flex; gap: 8px; align-items: center; font: 600 13px/1 var(--font); cursor: pointer; padding: 8px 12px; border-radius: 99px; border: 1px solid var(--line); }
+  label.pick:has(input:checked) { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+  /* device frames — mockups live inside .screen */
+  .frame-browser { width: 100%; max-width: 600px; border-radius: 12px; border: 1px solid var(--line); overflow: hidden; background: #fff; box-shadow: 0 12px 40px rgba(0,0,0,.08); }
+  .frame-browser .chrome { height: 34px; display: flex; align-items: center; gap: 6px; padding: 0 12px; background: #ececec; }
+  .frame-browser .chrome i { width: 10px; height: 10px; border-radius: 50%; background: #c9c9c9; }
+  .frame-browser .chrome span { margin-left: 10px; flex: 1; height: 20px; border-radius: 6px; background: #fff; font: 11px/20px var(--mono); color: #888; padding-left: 8px; overflow: hidden; }
+  .frame-browser .screen { aspect-ratio: 16 / 10; overflow: hidden; position: relative; }
+  .frame-iphone { width: min(300px, 100%); aspect-ratio: 390 / 844; border-radius: 46px; padding: 10px; background: #111; box-shadow: 0 14px 40px rgba(0,0,0,.18); position: relative; }
+  .frame-iphone::before { content: ""; position: absolute; top: 20px; left: 50%; translate: -50% 0; width: 92px; height: 26px; border-radius: 20px; background: #000; z-index: 3; }
+  .frame-iphone .screen { width: 100%; height: 100%; border-radius: 37px; overflow: hidden; position: relative; background: #fff; }
+  .frame-android { width: min(300px, 100%); aspect-ratio: 412 / 915; border-radius: 30px; padding: 8px; background: #1d1d1f; box-shadow: 0 14px 40px rgba(0,0,0,.18); position: relative; }
+  .frame-android::before { content: ""; position: absolute; top: 20px; left: 50%; translate: -50% 0; width: 12px; height: 12px; border-radius: 50%; background: #000; z-index: 3; }
+  .frame-android .screen { width: 100%; height: 100%; border-radius: 23px; overflow: hidden; position: relative; background: #fff; }
+
+  /* mockup base — set proposed tokens on each .mock */
+  .mock { --mock-bg: #fff; --mock-ink: #111; --mock-muted: #666; --mock-accent: #3d5afe; --mock-radius: 12px;
+          --mock-font: var(--font); height: 100%; background: var(--mock-bg); color: var(--mock-ink); font-family: var(--mock-font);
+          padding: 54px 18px 18px; display: flex; flex-direction: column; gap: 12px; font-size: 13px; }
+  .frame-browser .mock { padding: 28px 36px; }
+  .mock .btn { background: var(--mock-accent); color: #fff; border-radius: var(--mock-radius); padding: 11px 16px; text-align: center; font-weight: 600; }
+  .mock .card { border-radius: var(--mock-radius); background: color-mix(in oklab, var(--mock-ink) 5%, var(--mock-bg)); padding: 14px; }
+
+  /* tokens table */
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; background: var(--surface); border-radius: var(--radius); overflow: hidden; }
+  th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+  th { font: 600 11px/1.4 var(--mono); text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+  .dot { display: inline-block; width: 16px; height: 16px; border-radius: 5px; vertical-align: -3px; margin-right: 6px; border: 1px solid rgba(0,0,0,.1); }
+  .copy-before { text-decoration: line-through; color: var(--muted); }
+
+  /* approval bar */
+  .approve { position: fixed; left: 50%; bottom: 18px; translate: -50% 0; background: var(--ink); color: var(--bg); border-radius: 99px; padding: 10px 10px 10px 20px; display: flex; gap: 14px; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,.25); font-size: 14px; max-width: calc(100% - 32px); }
+  .approve[hidden] { display: none; }
+  .approve code { font: 13px/1 var(--mono); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .approve button { border: 0; border-radius: 99px; padding: 10px 16px; font: 600 13px/1 var(--font); background: var(--bg); color: var(--ink); cursor: pointer; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <span class="eyebrow">Art direction · DATE · trends PERIOD</span>
+    <h1>PROJECT — concepts</h1>
+    <p class="muted" style="max-width:720px">ONE-PARAGRAPH VERDICT: what the product is, how it feels today, the biggest lever.</p>
+    <div class="chips"><span class="chip">web</span><span class="chip">ios</span><span class="chip">android</span></div>
+  </header>
+
+  <section>
+    <div class="scores">
+      <!-- one .score per area; --w = score/5 -->
+      <div class="score"><span class="muted">UX</span><br><b>3.0</b><span class="muted">/5</span><div class="bar"><i style="width:60%"></i></div></div>
+      <div class="score"><span class="muted">UI</span><br><b>3.5</b><span class="muted">/5</span><div class="bar"><i style="width:70%"></i></div></div>
+      <div class="score"><span class="muted">Accessibility</span><br><b>2.5</b><span class="muted">/5</span><div class="bar"><i style="width:50%"></i></div></div>
+      <div class="score"><span class="muted">Platform fit</span><br><b>4.0</b><span class="muted">/5</span><div class="bar"><i style="width:80%"></i></div></div>
+      <div class="score"><span class="muted">Brand</span><br><b>2.0</b><span class="muted">/5</span><div class="bar"><i style="width:40%"></i></div></div>
+      <div class="score"><span class="muted">Positioning</span><br><b>2.5</b><span class="muted">/5</span><div class="bar"><i style="width:50%"></i></div></div>
+    </div>
+  </section>
+
+  <!-- DIRECTIONS: delete if the visual identity stays -->
+  <h2>Directions</h2>
+  <section class="directions">
+    <article class="dir">
+      <div class="hero" style="background:#F4F1EA;color:#141414">
+        <span class="eyebrow" style="color:inherit;opacity:.6">A — Refine</span>
+        <h3 style="font-size:30px;letter-spacing:-.02em">Headline in proposed type</h3>
+      </div>
+      <div class="body">
+        <p>IDEA IN ONE SENTENCE. Why it fits the brief.</p>
+        <div class="swatches">
+          <div class="sw"><i style="background:#141414"></i>#141414</div>
+          <div class="sw"><i style="background:#F4F1EA"></i>#F4F1EA</div>
+          <div class="sw"><i style="background:#3D5AFE"></i>#3D5AFE</div>
+        </div>
+        <p class="muted">Type: FONT / FONT · Radius: 12 · Depth: subtle shadow</p>
+        <label class="pick"><input type="checkbox" data-id="direction A"> Choose A</label>
+      </div>
+    </article>
+    <!-- B — Evolve, C — Bold: same structure -->
+  </section>
+
+  <h2>Recommendations</h2>
+
+  <!-- one article per visual recommendation -->
+  <article class="rec" id="R1">
+    <div class="rec-head">
+      <div><span class="id">R1</span><h3 style="display:inline">TITLE OF THE CHANGE</h3></div>
+      <div class="chips">
+        <span class="chip p1">P1</span><span class="chip">effort S</span>
+        <span class="chip basis">guideline</span><span class="chip basis">trend web-…</span><span class="chip basis">your taste</span>
+        <label class="pick"><input type="checkbox" data-id="R1"> Approve</label>
+      </div>
+    </div>
+    <div class="compare">
+      <div class="pane">
+        <span class="label">Before</span>
+        <img class="shot" src="screens/before/SCREEN.png" alt="Current SCREEN">
+      </div>
+      <div class="pane">
+        <span class="label">After — concept</span>
+        <div class="frame-iphone"><div class="screen">
+          <div class="mock" style="--mock-accent:#3D5AFE">
+            <strong style="font-size:26px;letter-spacing:-.02em;line-height:1.05">Proposed headline</strong>
+            <span style="color:var(--mock-muted)">Supporting line</span>
+            <div class="card">Card content mirroring the real screen</div>
+            <div style="flex:1"></div>
+            <div class="btn">Primary action</div>
+          </div>
+        </div></div>
+      </div>
+    </div>
+    <div class="why">
+      <div><b>Problem</b>WHAT IS WRONG, WITH EVIDENCE (F#, file:line).</div>
+      <div><b>Change</b>WHAT EXACTLY CHANGES.</div>
+      <div><b>Why</b>Guideline / trend id + status / taste profile rule / data.</div>
+      <div><b>Impact</b>EXPECTED EFFECT ON THE GOAL.</div>
+    </div>
+  </article>
+
+  <!-- TOKENS: delete if unchanged -->
+  <h2>Proposed tokens</h2>
+  <div class="table-wrap"><table>
+    <tr><th>Token</th><th>Now</th><th>Proposed</th><th>Why</th></tr>
+    <tr><td><code>color.accent</code></td><td><span class="dot" style="background:#5B8DEF"></span>#5B8DEF</td><td><span class="dot" style="background:#3D5AFE"></span>#3D5AFE</td><td>Contrast 4.6:1 on white (was 3.1:1)</td></tr>
+    <tr><td><code>type.display</code></td><td>Inter 32/40 600</td><td>FONT 40/42 650 −2%</td><td>Stronger hierarchy</td></tr>
+  </table></div>
+
+  <!-- POSITIONING: delete if unchanged -->
+  <h2>Positioning &amp; copy</h2>
+  <div class="table-wrap"><table>
+    <tr><th>Where</th><th>Now</th><th>Proposed</th></tr>
+    <tr><td>Hero headline</td><td class="copy-before">CURRENT</td><td><strong>PROPOSED</strong></td></tr>
+    <tr><td>Store subtitle</td><td class="copy-before">CURRENT</td><td><strong>PROPOSED</strong></td></tr>
+  </table></div>
+
+  <h2>Deliberately not recommended</h2>
+  <ul><li><b>TREND</b> — why it is wrong for this product.</li></ul>
+
+</div>
+
+<div class="approve" id="approve" hidden>
+  <code id="cmd"></code><button id="copy">Copy for Claude</button>
+</div>
+<script>
+  const boxes = [...document.querySelectorAll('input[type=checkbox][data-id]')];
+  const bar = document.getElementById('approve'), cmd = document.getElementById('cmd');
+  const update = () => {
+    const ids = boxes.filter(b => b.checked).map(b => b.dataset.id);
+    bar.hidden = !ids.length;
+    cmd.textContent = 'apply ' + ids.join(', ');
+  };
+  boxes.forEach(b => b.addEventListener('change', update));
+  document.getElementById('copy').addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(cmd.textContent); document.getElementById('copy').textContent = 'Copied'; }
+    catch { prompt('Copy this into Claude Code:', cmd.textContent); }
+  });
+</script>
+</body>
+</html>

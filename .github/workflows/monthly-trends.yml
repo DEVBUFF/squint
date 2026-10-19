@@ -1,0 +1,71 @@
+# Researches design trends on the 1st of every month and opens a PR that updates the shipped
+# trend base (knowledge/trends/<YYYY-MM>/). Needs the ANTHROPIC_API_KEY secret (or switch to
+# claude_code_oauth_token). Users receive merged updates via `claude plugin update squint@squint`.
+name: Monthly trend research
+
+on:
+  schedule:
+    - cron: "0 7 1 * *"
+  workflow_dispatch:
+    inputs:
+      platforms:
+        description: "Comma list: web,ios,android,branding"
+        default: "web,ios,android,branding"
+
+permissions:
+  contents: write
+  pull-requests: write
+  id-token: write
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      SQUINT_HOME: ${{ runner.temp }}/squint-home
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Period
+        run: echo "PERIOD=$(date -u +%Y-%m)" >> "$GITHUB_ENV"
+
+      - name: Research with Claude Code
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            /squint:research ${{ inputs.platforms || 'web,ios,android,branding' }} --repo --period ${{ env.PERIOD }}
+            This is a non-interactive CI run inside the plugin's own repository: never ask questions,
+            refresh whatever is missing or stale, and only write under knowledge/trends/.
+          claude_args: |
+            --plugin-dir .
+            --allowedTools "Read,Write,Edit,Glob,Grep,WebSearch,WebFetch,Agent,Bash(python3 *)"
+
+      - name: Bump plugin version when the knowledge changed
+        run: |
+          if [ -n "$(git status --porcelain knowledge/)" ]; then
+            python3 - <<'EOF'
+          import json
+          p = ".claude-plugin/plugin.json"
+          d = json.load(open(p))
+          a, b, c = map(int, d["version"].split("."))
+          d["version"] = f"{a}.{b}.{c + 1}"
+          with open(p, "w") as f:
+              json.dump(d, f, indent=2, ensure_ascii=False)
+              f.write("\n")
+          print("version ->", d["version"])
+          EOF
+          fi
+
+      - name: Open pull request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: trends/${{ env.PERIOD }}
+          commit-message: "trends: ${{ env.PERIOD }} research"
+          title: "Trends: ${{ env.PERIOD }}"
+          body: |
+            Monthly design-trend research for ${{ env.PERIOD }} (web, iOS, Android, branding).
+            Review `knowledge/trends/${{ env.PERIOD }}/summary.md` first, spot-check sources, then merge.
+          add-paths: |
+            knowledge/trends/**
+            .claude-plugin/plugin.json

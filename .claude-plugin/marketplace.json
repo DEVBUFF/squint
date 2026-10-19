@@ -1,0 +1,16 @@
+{
+  "name": "squint",
+  "owner": {
+    "name": "Igor Ryazancev",
+    "url": "https://github.com/DEVBUFF"
+  },
+  "description": "A UI/UX and branding art director for Claude Code that learns your taste and keeps up with monthly design trends.",
+  "plugins": [
+    {
+      "name": "squint",
+      "source": "./",
+      "description": "Audits web, iOS and Android products and proposes changes based on platform guidelines, monthly trend research and your moodboards. It shows a plan and visual concepts first, and applies changes only after you approve them.",
+      "category": "design"
+    }
+  ]
+}

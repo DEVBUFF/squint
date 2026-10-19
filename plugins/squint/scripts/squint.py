@@ -18,7 +18,6 @@ import os
 import re
 import shutil
 import ssl
-import subprocess
 import sys
 import urllib.error
 import urllib.parse
@@ -26,6 +25,9 @@ import urllib.request
 import xml.etree.ElementTree as ET
 from collections import Counter
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import sqlocal  # noqa: E402  (process launching lives there; this file only fetches)
 
 PLUGIN_ROOT = Path(__file__).resolve().parent.parent
 KNOWLEDGE = PLUGIN_ROOT / "knowledge"
@@ -37,7 +39,6 @@ GLOBAL_HOME = Path(os.environ.get("SQUINT_HOME", "~/.squint")).expanduser()
 UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/128.0 Safari/537.36")
 IMG_EXT = {".png", ".jpg", ".jpeg", ".webp", ".gif", ".heic", ".heif", ".avif"}
-READABLE_EXT = {".png", ".jpg", ".jpeg", ".webp", ".gif"}
 PLATFORMS = ("web", "ios", "android", "branding")
 STALE_DAYS = 35
 NUDGE_HOURS = 20
@@ -412,19 +413,6 @@ def ext_from(ctype, url):
     return ext if ext in IMG_EXT else ".jpg"
 
 
-def make_readable(path):
-    """Convert HEIC/AVIF to JPEG with macOS `sips` so Claude can view the file."""
-    path = Path(path)
-    if path.suffix.lower() in READABLE_EXT or not shutil.which("sips"):
-        return path
-    dest = path.with_suffix(".jpg")
-    res = subprocess.run(["sips", "-s", "format", "jpeg", str(path), "--out", str(dest)], capture_output=True)
-    if res.returncode == 0 and dest.exists():
-        path.unlink(missing_ok=True)
-        return dest
-    return path
-
-
 def add_record(store, idx, *, key, source, kind, data=None, src_path=None, ext=".jpg", url=None,
                page=None, title="", tags=None, note=""):
     rid = "r_" + sha(key)
@@ -437,7 +425,7 @@ def add_record(store, idx, *, key, source, kind, data=None, src_path=None, ext="
         dest.write_bytes(data)
     else:
         shutil.copy2(src_path, dest)
-    dest = make_readable(dest)
+    dest = sqlocal.convert_to_jpeg(dest)
     idx[rid] = {"id": rid, "source": source, "kind": kind, "url": url, "page": page,
                 "title": (title or "")[:200], "file": str(dest.relative_to(store.root)),
                 "tags": tags or [], "note": note, "added": today(), "status": "new"}
@@ -482,38 +470,8 @@ ARENA_HELP = ("Are.na does not permit automated access to its site or API, so it
               "and drop them into the inbox folder (`squint.py inbox --open`).")
 
 
-def find_chrome():
-    env = os.environ.get("CHROME_PATH")
-    cands = [env] if env else []
-    cands += ["/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
-              "/Applications/Chromium.app/Contents/MacOS/Chromium",
-              "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge",
-              "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser"]
-    cands += [shutil.which(n) for n in ("google-chrome", "google-chrome-stable", "chromium", "chromium-browser",
-                                        "microsoft-edge", "chrome")]
-    return next((c for c in cands if c and Path(c).exists()), None)
-
-
-def chrome_screenshot(url, dest, width=1440, height=900, mobile=False):
-    chrome = find_chrome()
-    if not chrome:
-        raise RuntimeError("Chrome/Chromium not found (set CHROME_PATH) - or install the squint-devices companion")
-    if mobile:
-        width, height = 390, 844
-    cmd = [chrome, "--headless=new", "--hide-scrollbars", "--disable-gpu", "--no-first-run",
-           "--no-default-browser-check", f"--window-size={width},{height}", "--virtual-time-budget=6000",
-           f"--screenshot={dest}", url]
-    if mobile:
-        cmd.insert(-1, "--user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) "
-                       "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1")
-    subprocess.run(cmd, capture_output=True, timeout=90)
-    if not Path(dest).exists():
-        raise RuntimeError("Chrome did not produce a screenshot")
-    return Path(dest)
-
-
 def page_items(src):
-    """A web page source: og:image (if any) + a viewport screenshot when Chrome is available."""
+    """A web page source: its og:image (for a full screenshot use a browser MCP or `capture url`)."""
     items = []
     try:
         data, ctype, final = http_get(src["url"], limit=5_000_000)
@@ -532,23 +490,10 @@ def page_items(src):
     except Exception as e:  # noqa: BLE001
         title = src.get("name", "")
         print(f"  could not fetch page ({e})", file=sys.stderr)
-    items.append({"screenshot": True, "page": src["url"], "title": title})
     return items
 
 
 def ingest(store, idx, src, item, tags):
-    if item.get("screenshot"):
-        tmp = store.p("references", "files", "_tmp.png")
-        tmp.parent.mkdir(parents=True, exist_ok=True)
-        try:
-            chrome_screenshot(item["page"], tmp)
-        except Exception as e:  # noqa: BLE001
-            print(f"  skip screenshot: {e}", file=sys.stderr)
-            return None
-        rid = add_record(store, idx, key="shot:" + item["page"], source=src["id"], kind="page-screenshot",
-                         src_path=tmp, ext=".png", page=item["page"], title=item.get("title"), tags=tags)
-        tmp.unlink(missing_ok=True)
-        return rid
     key = re.sub(r"/\d+x\d*/", "/", item["img"])
     if "r_" + sha(key) in idx:
         return None
@@ -647,9 +592,7 @@ def cmd_inbox(args):
     store = pick_store(args).ensure()
     inbox = store.p("inbox")
     if args.open:
-        opener = "open" if sys.platform == "darwin" else "xdg-open" if shutil.which("xdg-open") else None
-        if opener:
-            subprocess.run([opener, str(inbox)], capture_output=True)
+        sqlocal.open_folder(inbox)
         out(f"inbox folder: {inbox}\ndrop screenshots there (subfolders become tags), then run: squint.py inbox"
             + (" --project" if store.scope == "project" else ""))
         return
@@ -1058,44 +1001,24 @@ def cmd_latest_audit(args):
 # ---------------------------------------------------------------- capture
 
 def cmd_capture(args):
-    dest = Path(args.out).expanduser() if args.out else None
     if args.target == "devices":
-        info = {}
-        if shutil.which("xcrun"):
-            r = subprocess.run(["xcrun", "simctl", "list", "devices", "booted"], capture_output=True, text=True)
-            info["ios_booted"] = [ln.strip() for ln in r.stdout.splitlines() if "Booted" in ln]
-        else:
-            info["ios_booted"] = "xcrun not available (Xcode not installed)"
-        if shutil.which("adb"):
-            r = subprocess.run(["adb", "devices"], capture_output=True, text=True)
-            info["android"] = [ln for ln in r.stdout.splitlines()[1:] if ln.strip()]
-        else:
-            info["android"] = "adb not on PATH (Android platform-tools not installed)"
-        info["chrome"] = find_chrome() or "not found"
-        out(info)
+        out(sqlocal.devices())
         return
-    if not dest:
+    if not args.out:
         die("--out is required")
+    dest = Path(args.out).expanduser()
     dest.parent.mkdir(parents=True, exist_ok=True)
-    if args.target == "url":
-        if not args.url:
-            die("capture url needs --url")
-        chrome_screenshot(args.url, dest, args.width, args.height, args.mobile)
-    elif args.target == "ios":
-        if not shutil.which("xcrun"):
-            die("xcrun not found - install Xcode, or use a mobile MCP (squint-devices)")
-        r = subprocess.run(["xcrun", "simctl", "io", args.device or "booted", "screenshot", str(dest)],
-                           capture_output=True, text=True)
-        if r.returncode:
-            die(r.stderr.strip() or "simctl screenshot failed (is a simulator booted?)")
-    elif args.target == "android":
-        if not shutil.which("adb"):
-            die("adb not found - install Android platform-tools, or use a mobile MCP (squint-devices)")
-        cmd = ["adb"] + (["-s", args.device] if args.device else []) + ["exec-out", "screencap", "-p"]
-        r = subprocess.run(cmd, capture_output=True)
-        if r.returncode or not r.stdout:
-            die(r.stderr.decode(errors="replace").strip() or "screencap failed (is an emulator running?)")
-        dest.write_bytes(r.stdout)
+    try:
+        if args.target == "url":
+            if not args.url:
+                die("capture url needs --url")
+            sqlocal.chrome_screenshot(args.url, dest, args.width, args.height, args.mobile)
+        elif args.target == "ios":
+            sqlocal.capture_ios(dest, args.device)
+        elif args.target == "android":
+            sqlocal.capture_android(dest, args.device)
+    except RuntimeError as e:
+        die(str(e))
     out(f"saved {dest}")
 
 

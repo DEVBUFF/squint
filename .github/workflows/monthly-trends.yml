@@ -34,6 +34,11 @@ jobs:
       - name: Period
         run: echo "PERIOD=$(date -u +%Y-%m)" >> "$GITHUB_ENV"
 
+      - name: Load the plugin from a copy (Claude Code protects a loaded plugin's files)
+        run: |
+          rsync -a --exclude .git ./ "$RUNNER_TEMP/squint-plugin/"
+          echo "SQUINT_REPO_DIR=$GITHUB_WORKSPACE" >> "$GITHUB_ENV"
+
       - name: Research with Claude Code
         uses: anthropics/claude-code-action@v1
         with:
@@ -45,7 +50,8 @@ jobs:
             This is a non-interactive CI run inside the plugin's own repository: never ask questions,
             refresh whatever is missing or stale, and only write under knowledge/trends/.
           claude_args: |
-            --plugin-dir .
+            --plugin-dir ${{ runner.temp }}/squint-plugin
+            --add-dir ${{ runner.temp }}/squint-plugin
             --allowedTools "Read,Write,Edit,Glob,Grep,WebSearch,WebFetch,Agent,Task,Skill,TodoWrite,Bash(python3 *),mcp__plugin_squint_exa__web_search_exa,mcp__plugin_squint_exa__web_fetch_exa"
 
       - name: Bump plugin version when the knowledge changed

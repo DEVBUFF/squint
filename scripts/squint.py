@@ -28,6 +28,9 @@ from pathlib import Path
 
 PLUGIN_ROOT = Path(__file__).resolve().parent.parent
 KNOWLEDGE = PLUGIN_ROOT / "knowledge"
+# `research --repo` updates the shipped base. In CI the plugin is loaded from a copy (Claude Code
+# protects a loaded plugin's own files), so SQUINT_REPO_DIR points at the checkout to update.
+REPO_KNOWLEDGE = Path(os.environ["SQUINT_REPO_DIR"]) / "knowledge" if os.environ.get("SQUINT_REPO_DIR") else KNOWLEDGE
 TEMPLATES = PLUGIN_ROOT / "templates"
 GLOBAL_HOME = Path(os.environ.get("SQUINT_HOME", "~/.squint")).expanduser()
 UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
@@ -245,13 +248,13 @@ def cmd_trends(args):
 
 def cmd_research(args):
     period = args.period or dt.date.today().strftime("%Y-%m")
-    base = (KNOWLEDGE / "trends") if args.repo else (GLOBAL_HOME / "trends")
+    base = (REPO_KNOWLEDGE / "trends") if args.repo else (GLOBAL_HOME / "trends")
     if args.done:
         st = state()
         st["last_research"] = {"date": today(), "period": period, "target": str(base / period)}
         save_state(st)
         if args.repo:
-            idx_path = KNOWLEDGE / "trends" / "index.json"
+            idx_path = REPO_KNOWLEDGE / "trends" / "index.json"
             idx = read_json(idx_path, {"periods": []})
             periods = sorted(set(idx.get("periods", [])) | {period}, reverse=True)
             write_json(idx_path, {"latest": periods[0], "periods": periods})

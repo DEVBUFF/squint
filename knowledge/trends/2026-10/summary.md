@@ -1,6 +1,6 @@
 ---
 period: 2026-10
-researched_at: 2026-10-18
+researched_at: 2026-10-19
 ---
 
 # Design trends digest · October 2026
@@ -27,6 +27,11 @@ Platform files: [web](web.md) · [ios](ios.md) · [android](android.md) · [bran
 ## What changed since last month
 No previous period exists yet. Every trend has `Momentum: new`. From the next run on, list
 promotions, demotions, new ids and faded ids here.
+
+Branding refreshed in place on 2026-10-19 (ids unchanged): the Brisbane 2032 emblem date is corrected
+(leaked Oct 3, unveiled about Oct 6), the Apple Music black-and-white icon is still in iOS 27.2 beta 4
+with negative reaction (stays Fading/watchlist), and the Poetry Foundation (Pentagram) is added under
+`brand-evolve-not-erase`. Light refresh from search summaries only.
 
 ## Cross-platform themes
 | Theme | iOS | Android | Web | Branding |

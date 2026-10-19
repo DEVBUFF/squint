@@ -1,6 +1,6 @@
 # Researches design trends on the 1st of every month and opens a PR that updates the shipped
-# trend base (knowledge/trends/<YYYY-MM>/). Runs on the maintainer's Claude subscription: create a token
-# with `claude setup-token` and save it as the CLAUDE_CODE_OAUTH_TOKEN repository secret.
+# trend base (plugins/squint/knowledge/trends/<YYYY-MM>/). Runs on the maintainer's Claude subscription
+# (see CONTRIBUTING.md). This workflow is repository tooling and is not part of the installed plugin.
 # Users receive merged updates via `claude plugin update squint@squint`.
 name: Monthly trend research
 
@@ -36,8 +36,8 @@ jobs:
 
       - name: Load the plugin from a copy (Claude Code protects a loaded plugin's files)
         run: |
-          rsync -a --exclude .git ./ "$RUNNER_TEMP/squint-plugin/"
-          echo "SQUINT_REPO_DIR=$GITHUB_WORKSPACE" >> "$GITHUB_ENV"
+          rsync -a plugins/squint/ "$RUNNER_TEMP/squint-plugin/"
+          echo "SQUINT_REPO_DIR=$GITHUB_WORKSPACE/plugins/squint" >> "$GITHUB_ENV"
 
       - name: Research with Claude Code
         uses: anthropics/claude-code-action@v1
@@ -47,7 +47,7 @@ jobs:
           prompt: |
             /squint:research ${{ inputs.platforms || 'web,ios,android,branding' }} --repo --period ${{ env.PERIOD }}${{ inputs.force && ' --force' || '' }}
             This is a non-interactive CI run inside the plugin's own repository: never ask questions,
-            refresh whatever is missing or stale, and only write under knowledge/trends/.
+            refresh whatever is missing or stale, and only write under plugins/squint/knowledge/trends/.
           claude_args: |
             --plugin-dir ${{ runner.temp }}/squint-plugin
             --add-dir ${{ runner.temp }}/squint-plugin
@@ -55,10 +55,10 @@ jobs:
 
       - name: Bump plugin version when the knowledge changed
         run: |
-          if [ -n "$(git status --porcelain knowledge/)" ]; then
+          if [ -n "$(git status --porcelain plugins/squint/knowledge/)" ]; then
             python3 - <<'EOF'
           import json
-          p = ".claude-plugin/plugin.json"
+          p = "plugins/squint/.claude-plugin/plugin.json"
           d = json.load(open(p))
           a, b, c = map(int, d["version"].split("."))
           d["version"] = f"{a}.{b}.{c + 1}"
@@ -77,7 +77,7 @@ jobs:
           title: "Trends: ${{ env.PERIOD }}"
           body: |
             Monthly design-trend research for ${{ env.PERIOD }} (web, iOS, Android, branding).
-            Review `knowledge/trends/${{ env.PERIOD }}/summary.md` first, spot-check sources, then merge.
+            Review `plugins/squint/knowledge/trends/${{ env.PERIOD }}/summary.md` first, spot-check sources, then merge.
           add-paths: |
-            knowledge/trends/**
-            .claude-plugin/plugin.json
+            plugins/squint/knowledge/trends/**
+            plugins/squint/.claude-plugin/plugin.json

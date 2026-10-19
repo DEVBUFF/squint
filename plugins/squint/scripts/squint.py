@@ -477,8 +477,7 @@ def pinterest_items(src, limit):
 
 
 ARENA_HELP = ("Are.na does not permit automated access to its site or API, so it is not synced by this script. "
-              "Options: (1) connect Are.na's official MCP with your own account "
-              "(`claude mcp add --transport http arena https://mcp.are.na/mcp`, then /mcp -> Authenticate) and ask "
+              "Options: (1) connect Are.na's official MCP with your own account (/squint:setup lists it) and ask "
               "Claude to list your channel's images, then `squint.py add <image urls>`; (2) save the images you like "
               "and drop them into the inbox folder (`squint.py inbox --open`).")
 

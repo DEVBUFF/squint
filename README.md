@@ -121,9 +121,9 @@ images into the inbox.
    research tools pre-approved. You can also run `/squint:research` any time.
 3. **Reminder.** If the newest base is older than 35 days, Claude offers a refresh at session start.
 
-Trend files follow [`knowledge/trends/FORMAT.md`](knowledge/trends/FORMAT.md): stable ids, status
+Trend files follow [`knowledge/trends/FORMAT.md`](plugins/squint/knowledge/trends/FORMAT.md): stable ids, status
 (emerging → rising → mainstream → peaking → fading), momentum, "fits / avoid when / implement", and
-dated sources. `python3 scripts/squint.py check-trends` validates them.
+dated sources. `python3 plugins/squint/scripts/squint.py check-trends` validates them.
 
 ## Tools
 
@@ -164,14 +164,17 @@ Are.na, MobileBuildMCP.
 ## Repository layout
 
 ```
-.claude-plugin/   plugin.json, marketplace.json
-skills/           audit · apply · research · moodboard · learn · positioning · setup
-agents/           trend-scout · reference-analyst · ux-auditor · brand-strategist
-knowledge/        guidelines/ (stable) · trends/<YYYY-MM>/ (monthly) · sources.md
-templates/        report.md · concepts.html · brief.md · taste-profile.md · reference-analysis.json
-scripts/          squint.py (stdlib helper CLI) · schedule.sh (monthly local job)
-hooks/            SessionStart reminder (stale trends, references waiting)
-.mcp.json         Exa search MCP (device MCPs live in squint-devices)
+.claude-plugin/marketplace.json    the squint marketplace (squint + squint-devices)
+plugins/squint/                    the plugin itself — only this folder is installed
+  .claude-plugin/                  plugin.json, icon.png
+  skills/                          audit · apply · research · moodboard · learn · positioning · setup
+  agents/                          trend-scout · reference-analyst · ux-auditor · brand-strategist
+  knowledge/                       guidelines/ (stable) · trends/<YYYY-MM>/ (monthly) · sources.md
+  templates/                       report.md · concepts.html · brief.md · taste-profile.md · reference-analysis.json
+  scripts/                         squint.py (stdlib helper CLI) · schedule.sh (monthly local job)
+  hooks/                           SessionStart reminder (stale trends, references waiting)
+  .mcp.json                        Exa search MCP (device MCPs live in squint-devices)
+.github/workflows/                 validation, monthly trend research, token check (repo tooling)
 ```
 
 ## Contributing

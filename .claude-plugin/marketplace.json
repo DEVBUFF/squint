@@ -8,7 +8,7 @@
   "plugins": [
     {
       "name": "squint",
-      "source": "./",
+      "source": "./plugins/squint",
       "description": "Audits web, iOS and Android products and proposes changes based on platform guidelines, monthly trend research and your moodboards. It shows a plan and visual concepts first, and applies changes only after you approve them.",
       "category": "design"
     },

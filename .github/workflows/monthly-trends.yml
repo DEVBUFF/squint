@@ -1,6 +1,7 @@
 # Researches design trends on the 1st of every month and opens a PR that updates the shipped
-# trend base (knowledge/trends/<YYYY-MM>/). Needs the ANTHROPIC_API_KEY secret (or switch to
-# claude_code_oauth_token). Users receive merged updates via `claude plugin update squint@squint`.
+# trend base (knowledge/trends/<YYYY-MM>/). Runs on the maintainer's Claude subscription: create a token
+# with `claude setup-token` and save it as the CLAUDE_CODE_OAUTH_TOKEN repository secret.
+# Users receive merged updates via `claude plugin update squint@squint`.
 name: Monthly trend research
 
 on:
@@ -32,7 +33,7 @@ jobs:
       - name: Research with Claude Code
         uses: anthropics/claude-code-action@v1
         with:
-          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           prompt: |
             /squint:research ${{ inputs.platforms || 'web,ios,android,branding' }} --repo --period ${{ env.PERIOD }}

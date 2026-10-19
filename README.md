@@ -48,6 +48,17 @@ Google Chrome. Optional: Xcode (iOS Simulator), Android platform-tools + emulato
 **Updates:** `claude plugin update squint@squint`, or enable auto-update in
 `/plugin` → Marketplaces. Merged monthly trend PRs bump the version.
 
+## Who pays for what
+
+Squint has no server and ships no keys. Everything it does (audits, `apply`, `learn`,
+`positioning`, `research`) runs in **your own Claude Code session**, so it uses **your** Claude
+subscription (Pro / Max) or your API key, whichever you are logged in with. The local monthly
+schedule runs `claude -p` under the same login.
+
+The only thing paid by the maintainer is the shared trend base: once a month a GitHub Action
+researches trends on the maintainer's subscription and ships them to everyone with the next plugin
+update. Bundled MCP servers run locally, except Exa search, which uses its free keyless tier.
+
 ## Skills
 
 | Command | Natural language works too | What happens |

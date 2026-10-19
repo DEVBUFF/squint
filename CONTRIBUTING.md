@@ -24,5 +24,6 @@ python3 scripts/squint.py -h                    # helper CLI (stdlib only)
 SQUINT_HOME=/tmp/adtest python3 scripts/squint.py status   # isolated data dir for testing
 ```
 
-The monthly research workflow needs an `ANTHROPIC_API_KEY` repository secret (or swap it for
-`claude_code_oauth_token`). Merging its PR bumps the plugin version, which ships the update.
+The monthly research workflow runs on the maintainer's Claude subscription: `claude setup-token`, then
+save the token as the `CLAUDE_CODE_OAUTH_TOKEN` repository secret. Forks can use their own token or
+swap the input for `anthropic_api_key`. Merging its PR bumps the plugin version, which ships the update.

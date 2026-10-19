@@ -2,7 +2,7 @@
 name: research
 description: Monthly design-trend research for UI/UX (web, iOS, Android) and branding/positioning. Runs parallel trend-scout agents with web search, compares the findings with last month (momentum, new, fading), and writes the dated trend base that audits use.
 when_to_use: Monthly refresh, when the trend base is stale (older than 35 days), or when the user asks about current trends. Examples - "/squint:research", "update the design trends", "what's trending in UI right now", "обнови тренды", "собери актуальные тренды", "что сейчас в тренде в дизайне".
-argument-hint: "[web,ios,android,branding] [--repo] [--period YYYY-MM]"
+argument-hint: "[web,ios,android,branding] [--repo] [--period YYYY-MM] [--force]"
 allowed-tools:
   - Read
   - Glob
@@ -24,7 +24,8 @@ Helper: `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/squint.py"` (`sq`). Arguments: `
    previous file for each platform, the format spec and the sources list. Read
    `knowledge/trends/FORMAT.md` and `knowledge/sources.md`.
    If this period's files already exist and are under 7 days old, ask whether to redo them or only
-   refresh what changed. In non-interactive runs, refresh what changed.
+   refresh what changed. In non-interactive runs, refresh what changed. With `--force` in the
+   arguments, always run the scouts and refresh every requested platform in place, whatever its age.
 2. **Scout in parallel.** Platforms come from `$ARGUMENTS`, or default to `web, ios, android, branding`.
    Spawn one `trend-scout` agent per platform, all in one message. Give each:
    platform, period, today's date, output path, previous file path (or none), and the absolute paths

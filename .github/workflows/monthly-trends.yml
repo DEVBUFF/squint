@@ -35,6 +35,7 @@ jobs:
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          show_full_output: true  # TEMP: diagnostics
           prompt: |
             /squint:research ${{ inputs.platforms || 'web,ios,android,branding' }} --repo --period ${{ env.PERIOD }}
             This is a non-interactive CI run inside the plugin's own repository: never ask questions,

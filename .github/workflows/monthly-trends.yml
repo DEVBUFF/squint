@@ -33,6 +33,7 @@ jobs:
         uses: anthropics/claude-code-action@v1
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           prompt: |
             /squint:research ${{ inputs.platforms || 'web,ios,android,branding' }} --repo --period ${{ env.PERIOD }}
             This is a non-interactive CI run inside the plugin's own repository: never ask questions,

@@ -4,6 +4,7 @@ description: Monthly design-trend research for UI/UX (web, iOS, Android) and bra
 when_to_use: Monthly refresh, when the trend base is stale (older than 35 days), or when the user asks about current trends. Examples - "/squint:research", "update the design trends", "what's trending in UI right now", "обнови тренды", "собери актуальные тренды", "что сейчас в тренде в дизайне".
 argument-hint: "[web,ios,android,branding] [--repo] [--period YYYY-MM] [--force]"
 allowed-tools:
+  - Bash(python3 "${CLAUDE_SKILL_DIR}/../../scripts/squint.py" *)
   - Read
   - Glob
   - Grep
@@ -12,12 +13,11 @@ allowed-tools:
   - WebSearch
   - WebFetch
   - Agent
-  - Bash(python3 *)
 ---
 
 # Monthly trend research
 
-Helper: `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/squint.py"` (`sq`). Arguments: `$ARGUMENTS`.
+Helper: `python3 "${CLAUDE_SKILL_DIR}/../../scripts/squint.py"` (`sq`). Arguments: `$ARGUMENTS`.
 
 1. **Target.** Run `sq research` (add `--repo` only when `$ARGUMENTS` contains `--repo`; maintainers
    and CI use it to update the shipped base; pass `--period` if given). It prints the target dir, the

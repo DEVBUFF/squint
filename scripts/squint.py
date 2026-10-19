@@ -17,6 +17,7 @@ import json
 import os
 import re
 import shutil
+import ssl
 import subprocess
 import sys
 import urllib.error
@@ -91,25 +92,29 @@ def slugify(text, n=48):
     return s[:n] or "item"
 
 
+def ssl_context():
+    """Default trust store, or certifi's when Python's own store is missing (python.org macOS builds)."""
+    try:
+        import certifi
+        return ssl.create_default_context(cafile=certifi.where())
+    except ImportError:
+        return ssl.create_default_context()
+
+
 def http_get(url, limit=20_000_000, timeout=25):
-    """Return (bytes, content_type, final_url). Falls back to curl when Python's SSL store is broken."""
+    """Return (bytes, content_type, final_url)."""
     req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "*/*"})
     try:
-        with urllib.request.urlopen(req, timeout=timeout) as r:
+        with urllib.request.urlopen(req, timeout=timeout, context=ssl_context()) as r:
             data = r.read(limit + 1)
             if len(data) > limit:
                 raise ValueError(f"response larger than {limit} bytes")
             return data, r.headers.get("Content-Type", ""), r.geturl()
     except urllib.error.URLError as e:
-        if "CERTIFICATE" not in str(e).upper() or not shutil.which("curl"):
-            raise
-    marker = "\n__AD_META__"
-    res = subprocess.run(["curl", "-sSL", "-A", UA, "--max-time", str(timeout),
-                          "-w", marker + "%{content_type}|%{url_effective}", url],
-                         capture_output=True, check=True)
-    body, _, meta = res.stdout.rpartition(marker.encode())
-    ctype, _, final = meta.decode(errors="replace").partition("|")
-    return body, ctype, final or url
+        if "CERTIFICATE" in str(e).upper():
+            raise RuntimeError("Python cannot verify HTTPS certificates. Fix: `pip install certifi`, or on a "
+                               "python.org macOS install run 'Install Certificates.command'.") from e
+        raise
 
 
 def frontmatter(path):
@@ -452,12 +457,7 @@ def pin_big(url):
 
 
 def pinterest_items(src, limit):
-    token = os.environ.get("PINTEREST_ACCESS_TOKEN")
-    if token and src["type"] == "pinterest-board":
-        try:
-            return pinterest_api_items(src, token, limit)
-        except Exception as e:  # noqa: BLE001
-            print(f"  pinterest API failed ({e}); falling back to RSS", file=sys.stderr)
+    """Public board/profile RSS: the newest 25 pins."""
     data, _, _ = http_get(src["feed"], limit=5_000_000)
     items = []
     try:
@@ -473,40 +473,6 @@ def pinterest_items(src, limit):
         text = html.unescape(data.decode("utf-8", "replace"))
         for m in re.finditer(r'src="(https://i\.pinimg\.com/[^"]+)"', text):
             items.append({"img": pin_big(m.group(1)), "page": None, "title": ""})
-    return items[:limit]
-
-
-def pinterest_api_items(src, token, limit):
-    """Pinterest API v5 (own boards; token needs boards:read + pins:read)."""
-    def api(path):
-        req = urllib.request.Request("https://api.pinterest.com/v5" + path,
-                                     headers={"Authorization": f"Bearer {token}", "User-Agent": UA})
-        with urllib.request.urlopen(req, timeout=25) as r:
-            return json.loads(r.read())
-    board_slug = src["url"].rstrip("/").split("/")[-1].lower()
-    board_id, bookmark = None, None
-    while board_id is None:
-        page = api("/boards?page_size=100" + (f"&bookmark={bookmark}" if bookmark else ""))
-        for b in page.get("items", []):
-            if slugify(b.get("name", "")) == slugify(board_slug):
-                board_id = b["id"]
-        bookmark = page.get("bookmark")
-        if not bookmark:
-            break
-    if not board_id:
-        raise ValueError(f"board {board_slug!r} not found among the token owner's boards")
-    items, bookmark = [], None
-    while len(items) < limit:
-        page = api(f"/boards/{board_id}/pins?page_size=100" + (f"&bookmark={bookmark}" if bookmark else ""))
-        for pin in page.get("items", []):
-            imgs = (pin.get("media") or {}).get("images") or {}
-            best = imgs.get("1200x") or imgs.get("originals") or imgs.get("600x")
-            if best:
-                items.append({"img": best["url"], "page": f"https://www.pinterest.com/pin/{pin['id']}/",
-                              "title": pin.get("title") or pin.get("description") or ""})
-        bookmark = page.get("bookmark")
-        if not bookmark:
-            break
     return items[:limit]
 
 
@@ -532,7 +498,7 @@ def find_chrome():
 def chrome_screenshot(url, dest, width=1440, height=900, mobile=False):
     chrome = find_chrome()
     if not chrome:
-        raise RuntimeError("Chrome/Chromium not found (set CHROME_PATH) - or use the Playwright MCP tools")
+        raise RuntimeError("Chrome/Chromium not found (set CHROME_PATH) - or install the squint-devices companion")
     if mobile:
         width, height = 390, 844
     cmd = [chrome, "--headless=new", "--hide-scrollbars", "--disable-gpu", "--no-first-run",
@@ -1118,14 +1084,14 @@ def cmd_capture(args):
         chrome_screenshot(args.url, dest, args.width, args.height, args.mobile)
     elif args.target == "ios":
         if not shutil.which("xcrun"):
-            die("xcrun not found - install Xcode, or use the mobile MCP tools")
+            die("xcrun not found - install Xcode, or use a mobile MCP (squint-devices)")
         r = subprocess.run(["xcrun", "simctl", "io", args.device or "booted", "screenshot", str(dest)],
                            capture_output=True, text=True)
         if r.returncode:
             die(r.stderr.strip() or "simctl screenshot failed (is a simulator booted?)")
     elif args.target == "android":
         if not shutil.which("adb"):
-            die("adb not found - install Android platform-tools, or use the mobile MCP tools")
+            die("adb not found - install Android platform-tools, or use a mobile MCP (squint-devices)")
         cmd = ["adb"] + (["-s", args.device] if args.device else []) + ["exec-out", "screencap", "-p"]
         r = subprocess.run(cmd, capture_output=True)
         if r.returncode or not r.stdout:

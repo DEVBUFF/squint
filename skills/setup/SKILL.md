@@ -1,30 +1,29 @@
 ---
 name: setup
-description: First-run setup and health check for the art director. Creates folders, checks capture tools (Chrome, Xcode Simulator, adb, Pillow, bundled MCP servers), connects optional design and research tools (Figma, Mobbin, Refero, Firecrawl), adds the first moodboard and schedules the monthly trend research.
+description: First-run setup and health check for the art director. Creates folders, checks capture tools (Chrome, Xcode Simulator, adb, Pillow, MCP servers), offers the squint-devices companion and optional design and research tools (Figma, Mobbin, Refero, Firecrawl), adds the first moodboard and schedules the monthly trend research.
 when_to_use: First use of the plugin, or when the user asks to set it up, check status, connect tools or schedule research. Examples - "/squint:setup", "set up the art director", "schedule monthly trends", "настрой арт-директора", "подключи инструменты", "что у тебя подключено".
 allowed-tools:
+  - Bash(python3 "${CLAUDE_SKILL_DIR}/../../scripts/squint.py" *)
   - Read
-  - Bash(python3 *)
-  - Bash(bash *schedule.sh*)
-  - Bash(command -v *)
-  - Bash(which *)
 ---
 
 # Setup and health check
 
-Helper: `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/squint.py"` (`sq`).
+Helper: `python3 "${CLAUDE_SKILL_DIR}/../../scripts/squint.py"` (`sq`).
 
 1. **Folders and state.** Run `sq init`, then `sq status` and `sq capture devices`.
 2. **Tools.** Show a compact table of what works and what doesn't:
    | Capability | Tool | Check |
    |---|---|---|
-   | Web screenshots, device emulation, Lighthouse accessibility | bundled `browser` MCP (chrome-devtools-mcp) | `mcp__plugin_squint_browser__*` tools are present; needs Google Chrome |
-   | iOS Simulator + Android emulator | bundled `mobile` MCP (mobile-mcp) | tools present; iOS needs Xcode, Android needs `adb` + an emulator |
-   | Trend and competitor search | built-in WebSearch/WebFetch + bundled `exa` MCP (no key) | tools present |
+   | Web screenshots, device emulation, Lighthouse accessibility | `browser` MCP from the `squint-devices` companion | its tools are present; needs Google Chrome |
+   | iOS Simulator + Android emulator | `mobile` MCP from the `squint-devices` companion | its tools are present; iOS needs Xcode, Android needs `adb` + an emulator |
+   | Trend and competitor search | built-in WebSearch/WebFetch + the plugin's `exa` MCP (no key) | tools present |
    | Exact colour extraction | Pillow | `python3 -c "import PIL"` |
    | Fallback screenshots | Chrome binary | `sq capture devices` → `chrome` |
-   If bundled MCP tools are missing, tell the user to check `/mcp` (the first start downloads the
-   packages via `npx` and can take a minute; Node.js 20+ is required).
+   If the device tools are missing, offer the companion (the user runs it; Node.js 20+ needed):
+   `claude plugin install squint-devices@squint`, then restart Claude Code. Its first start downloads
+   the packages via `npx` and can take a minute. Without it, `sq capture` (headless Chrome, `xcrun simctl`,
+   `adb`) still covers screenshots.
 3. **Optional connections.** Offer only the ones relevant to the user's stack, and print the command
    for the user to run. Never ask them to paste keys into the chat.
    - Figma (design files, variables, pushing UI into Figma):

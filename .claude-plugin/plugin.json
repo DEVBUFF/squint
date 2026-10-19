@@ -1,6 +1,6 @@
 {
   "name": "squint",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A UI/UX and branding art director for web, iOS and Android. It researches design trends every month and learns your taste from Pinterest boards and screenshots. When it audits a product it shows a plan with before/after concepts first, and changes the product only after you approve.",
   "author": {
     "name": "Igor Ryazancev",
@@ -8,6 +8,7 @@
   },
   "homepage": "https://github.com/DEVBUFF/squint",
   "repository": "https://github.com/DEVBUFF/squint",
+  "privacyPolicyUrl": "https://github.com/DEVBUFF/squint/blob/main/PRIVACY.md",
   "license": "MIT",
   "keywords": [
     "design",

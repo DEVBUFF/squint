@@ -43,7 +43,7 @@ recently (newly Baseline CSS/HTML features, regulation, visual trends) read the 
 component library folders (`components/ui/`), font loading in layout files (`next/font`, `<link>`).
 
 ## Capture & checks
-- Bundled **Playwright MCP**: navigate, resize to 1440×900 / 768×1024 / 390×844, full-page screenshots,
+- A **browser MCP** (the `squint-devices` companion's Chrome DevTools server, or Playwright): navigate, resize to 1440×900 / 768×1024 / 390×844, full-page screenshots,
   emulate dark mode, click through flows.
 - Fallback: `squint.py capture url --url <url> --out screens/before/home.png [--mobile]`.
 - Contrast: compute from token values; Lighthouse / axe when available (`npx lighthouse <url> --only-categories=accessibility,performance`).

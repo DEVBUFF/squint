@@ -4,23 +4,17 @@ description: Implement design changes the user approved from a Squint audit (R-i
 when_to_use: After an audit, when the user approves items. Examples - "apply R1 R3", "go with direction B", "do the quick wins", "делай 1, 3 и 5", "внедряй", "давай квик вины", "применяй направление B". Also when they ask to implement a specific recommendation from .squint/audits.
 argument-hint: "R1 R3 | quick wins | direction B"
 allowed-tools:
+  - Bash(python3 "${CLAUDE_SKILL_DIR}/../../scripts/squint.py" *)
   - Read
   - Glob
   - Grep
   - Write
   - Edit
-  - Bash(python3 *)
-  - Bash(git status*)
-  - Bash(git switch*)
-  - Bash(git checkout -b*)
-  - Bash(git diff*)
-  - Bash(xcrun simctl *)
-  - Bash(adb *)
 ---
 
 # Apply approved design changes
 
-Helper: `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/squint.py"` (`sq`). Approved scope: `$ARGUMENTS`.
+Helper: `python3 "${CLAUDE_SKILL_DIR}/../../scripts/squint.py"` (`sq`). Approved scope: `$ARGUMENTS`.
 
 1. **Resolve the scope.** `sq latest-audit` gives you the report path. Read `report.md`. Map the
    request to exact R-ids ("quick wins" means every R in that section, "direction B" means the B row
@@ -37,8 +31,8 @@ Helper: `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/squint.py"` (`sq`). Approved sco
 4. **Verify each batch.**
    - Run the project's own build, type-check and lint.
    - Take "after" screenshots with the same device, viewport, theme and state as "before", saved
-     under the same names in `screens/after/`. Use the browser MCP / `sq capture url` for web, and
-     `sq capture ios|android` plus the mobile MCP for apps.
+     under the same names in `screens/after/`. Use a browser MCP if connected, else `sq capture url`, for web,
+     and `sq capture ios|android` (plus a mobile MCP if connected) for apps.
    - Look at each before/after pair. Fix regressions before you move on.
    - Re-check contrast and target sizes for everything you touched.
 5. **Record.**

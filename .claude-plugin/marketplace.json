@@ -11,6 +11,12 @@
       "source": "./",
       "description": "Audits web, iOS and Android products and proposes changes based on platform guidelines, monthly trend research and your moodboards. It shows a plan and visual concepts first, and applies changes only after you approve them.",
       "category": "design"
+    },
+    {
+      "name": "squint-devices",
+      "source": { "source": "github", "repo": "DEVBUFF/squint-devices" },
+      "description": "Optional device tools for Squint: a Chrome browser MCP (screenshots, device emulation, Lighthouse accessibility) and a mobile MCP (iOS Simulator and Android emulator).",
+      "category": "design"
     }
   ]
 }

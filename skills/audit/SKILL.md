@@ -4,6 +4,7 @@ description: Art-direct a web, iOS or Android product. Audits UI, UX, accessibil
 when_to_use: The user asks to analyse, review, audit, critique or improve the design, UI, UX, look and feel, branding or positioning of their project or app. Examples - "analyse my project and suggest improvements", "review my app's design", "what should I change in the UI", "проанализируй мой проект и дай улучшения", "как улучшить интерфейс", "сделай аудит дизайна", "улучши UX".
 argument-hint: "[focus: ui | ux | brand | positioning | <screen>] [--platform web|ios|android]"
 allowed-tools:
+  - Bash(python3 "${CLAUDE_SKILL_DIR}/../../scripts/squint.py" *)
   - Read
   - Glob
   - Grep
@@ -11,9 +12,6 @@ allowed-tools:
   - Edit
   - WebSearch
   - WebFetch
-  - Bash(python3 *)
-  - Bash(xcrun simctl *)
-  - Bash(adb *)
 ---
 
 # Art-director audit
@@ -22,12 +20,12 @@ You are a senior art director with product-design and brand expertise. You bring
 restraint. Every recommendation rests on evidence and fits *this* product. You turn down fashionable
 ideas that don't fit. **In this skill you write only inside `.squint/`. Never edit product files.**
 
-- Helper CLI: `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/squint.py"` (called `sq` below).
+- Helper CLI: `python3 "${CLAUDE_SKILL_DIR}/../../scripts/squint.py"` (called `sq` below).
 - Knowledge: `${CLAUDE_PLUGIN_ROOT}/knowledge/guidelines/` (stable) and the trend files `sq trends` points to (monthly).
 - Focus requested by the user: `$ARGUMENTS` (empty = full audit).
 
 Current state:
-!`python3 "${CLAUDE_PLUGIN_ROOT}/scripts/squint.py" status`
+!`python3 "${CLAUDE_SKILL_DIR}/../../scripts/squint.py" status`
 
 ## 1. Orient (quietly and quickly)
 1. `sq detect` gives you the platforms, stack, token/theme files, positioning files and screens.
@@ -55,16 +53,17 @@ If the user says "just go", continue and mark your guesses as assumptions in the
 Real screenshots beat reading code. Capture 4–10 key screens and states into `screens/before/`, named
 `<screen>-<state>.png` (`home.png`, `home-dark.png`, `paywall-mobile.png`, `onboarding-2.png`).
 - **Web**: find the dev command (`run_hints` from detect). Start it in the background if it isn't
-  running, and ask before installing dependencies. Use the bundled browser MCP
-  (`mcp__plugin_squint_browser__*`): navigate, emulate a 1440×900 desktop and a 390×844 mobile
+  running, and ask before installing dependencies. If a browser MCP is connected (the `squint-devices`
+  companion's `browser` server, or any Chrome DevTools / Playwright MCP): navigate, emulate a 1440×900 desktop and a 390×844 mobile
   viewport, take full-page screenshots, and emulate dark mode. Run its Lighthouse audit for
   accessibility on the main page. Fallback: `sq capture url --url <url> --out <file> [--mobile]`.
 - **iOS**: check `sq capture devices`. With a booted simulator, override the status bar
   (`xcrun simctl status_bar booted override --time 9:41 ...`), then capture with `sq capture ios --out`
-  and walk through flows with the bundled mobile MCP (`mcp__plugin_squint_mobile__*`). Capture one
+  and walk through flows with a mobile MCP if one is connected (the `squint-devices` companion's
+  `mobile` server). Capture one
   screen in dark mode and one at a large Dynamic Type size (`xcrun simctl ui booted content_size ...`).
   If nothing is booted, offer to build and run, or ask for screenshots.
-- **Android**: `sq capture android --out` plus the mobile MCP. Capture dark theme and font scale too
+- **Android**: `sq capture android --out`, plus the mobile MCP if connected. Capture dark theme and font scale too
   (see `platform-android.md`).
 - **Can't run it?** Ask the user to drop screenshots into `.squint/inbox/` or paste their paths.
   Otherwise audit from code and state that confidence is reduced.
@@ -99,7 +98,7 @@ Fill in the template. For every visual recommendation, put the real "before" scr
 HTML/CSS "after" mockup in the matching device frame. The mockup uses the proposed tokens and keeps
 the real screen's content, so the change is the only difference. Add the tokens table, the direction
 cards (swatches + type specimen) and the copy table.
-Then **check the render**: screenshot `file://<audit dir>/concepts.html` with the browser MCP or
+Then **check the render**: screenshot `file://<audit dir>/concepts.html` with a browser MCP or
 `sq capture url`, look at it, and fix broken layouts before you present it.
 
 ## 7. Present and stop

@@ -4,6 +4,7 @@ description: A product positioning and brand strategy session. Covers competitiv
 when_to_use: The user asks about positioning, messaging, offer, landing copy, store listing, naming, tone of voice or whether to rebrand. Examples - "help me position the product", "rewrite our hero", "improve the App Store page", "помоги с позиционированием", "перепиши оффер", "как нас отличить от конкурентов", "нужен ли ребрендинг".
 argument-hint: "[statement | landing | store | voice | naming | rebrand]"
 allowed-tools:
+  - Bash(python3 "${CLAUDE_SKILL_DIR}/../../scripts/squint.py" *)
   - Read
   - Glob
   - Grep
@@ -11,12 +12,11 @@ allowed-tools:
   - WebSearch
   - WebFetch
   - Agent
-  - Bash(python3 *)
 ---
 
 # Positioning and brand strategy
 
-Helper: `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/squint.py"` (`sq`). Focus: `$ARGUMENTS` (empty = full session).
+Helper: `python3 "${CLAUDE_SKILL_DIR}/../../scripts/squint.py"` (`sq`). Focus: `$ARGUMENTS` (empty = full session).
 
 1. **Context.** Read `${CLAUDE_PLUGIN_ROOT}/knowledge/guidelines/positioning.md` and
    `brand-identity.md`. Get the newest branding trends with `sq trends --platform branding`. Read

@@ -20,7 +20,7 @@ should diverge.
 - Prefer native-backed navigation (native stack, native tabs) so platform chrome follows the OS
   design language automatically; check the iOS/Android trend files for the current native-tabs and
   material/glass support in Expo / React Navigation.
-- Capture: Expo dev build on Simulator / emulator → `squint.py capture ios|android` or the mobile MCP.
+- Capture: Expo dev build on Simulator / emulator → `squint.py capture ios|android` or a mobile MCP.
 
 ## Flutter
 - `ThemeData` (Material 3 `ColorScheme.fromSeed`), `CupertinoThemeData`, `theme.dart`, `app_theme.dart`.

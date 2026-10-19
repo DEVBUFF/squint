@@ -41,8 +41,16 @@ claude plugin install squint@squint
 Or inside Claude Code: `/plugin marketplace add DEVBUFF/squint`, then `/plugin install squint@squint`.
 Restart Claude Code, then run `/squint:setup`.
 
-**Requirements:** Claude Code, Python 3.9+, Node.js 20+ (bundled MCP servers start via `npx`),
-Google Chrome. Optional: Xcode (iOS Simulator), Android platform-tools + emulator, Pillow
+**Device tools (optional companion).** To let audits screenshot and click through your product in a real
+browser, the iOS Simulator and the Android emulator, also install
+[`squint-devices`](https://github.com/DEVBUFF/squint-devices) from the same marketplace:
+
+```bash
+claude plugin install squint-devices@squint
+```
+
+**Requirements:** Claude Code, Python 3.9+, Google Chrome. Node.js 20+ only for the `squint-devices`
+companion. Optional: Xcode (iOS Simulator), Android platform-tools + emulator, Pillow
 (`pip install pillow`, for exact palette extraction).
 
 **Updates:** `claude plugin update squint@squint`, or enable auto-update in
@@ -57,7 +65,7 @@ schedule runs `claude -p` under the same login.
 
 The only thing paid by the maintainer is the shared trend base: once a month a GitHub Action
 researches trends on the maintainer's subscription and ships them to everyone with the next plugin
-update. Bundled MCP servers run locally, except Exa search, which uses its free keyless tier.
+update. The `squint-devices` servers run locally; Exa search uses its free keyless tier.
 
 ## Skills
 
@@ -99,8 +107,7 @@ a "deliberately not recommended" list.
   `/squint:learn`. A session-start reminder tells you when references are waiting.
 
 **Pinterest:** public boards sync through their RSS feed, which returns the 25 newest pins per sync.
-For larger boards, the moodboard skill can collect pins through the browser. Owners of a board can
-use a `PINTEREST_ACCESS_TOKEN` (API v5).
+For larger boards, the moodboard skill can collect pins through a browser MCP (e.g. `squint-devices`).
 **Are.na** doesn't allow automated access, so connect its official MCP with your own login or save
 images into the inbox.
 
@@ -118,15 +125,16 @@ Trend files follow [`knowledge/trends/FORMAT.md`](knowledge/trends/FORMAT.md): s
 (emerging → rising → mainstream → peaking → fading), momentum, "fits / avoid when / implement", and
 dated sources. `python3 scripts/squint.py check-trends` validates them.
 
-## Bundled tools (start automatically)
+## Tools
 
-| Server | For | Key |
-|---|---|---|
-| `browser`: [chrome-devtools-mcp](https://github.com/ChromeDevTools/chrome-devtools-mcp) | Screenshots, device and dark-mode emulation, Lighthouse accessibility audit, performance traces | none (usage statistics and CrUX disabled) |
-| `mobile`: [mobile-mcp](https://github.com/mobile-next/mobile-mcp) | iOS Simulator and Android emulator: screenshots, taps, swipes, flows | none (telemetry disabled) |
-| `exa`: [Exa](https://exa.ai) remote MCP | Semantic web search for trends and competitors | none (rate-limited free tier) |
+| Server | Ships in | For | Key |
+|---|---|---|---|
+| `exa`: [Exa](https://exa.ai) remote MCP | `squint` (starts automatically) | Semantic web search for trends and competitors | none (rate-limited free tier) |
+| `browser`: [chrome-devtools-mcp](https://github.com/ChromeDevTools/chrome-devtools-mcp) | `squint-devices` | Screenshots, device and dark-mode emulation, Lighthouse accessibility audit, performance traces | none (usage statistics and CrUX disabled) |
+| `mobile`: [mobile-mcp](https://github.com/mobile-next/mobile-mcp) | `squint-devices` | iOS Simulator and Android emulator: screenshots, taps, swipes, flows | none (telemetry disabled) |
 
-You can disable any of them in `/mcp`. The built-in WebSearch/WebFetch are used too.
+You can disable any of them in `/mcp`. The built-in WebSearch/WebFetch are used too. Without
+`squint-devices`, audits fall back to headless Chrome, `xcrun simctl` and `adb` for screenshots.
 **Optional** (offered by `/squint:setup` when relevant): Figma, Mobbin, Refero, Firecrawl,
 Are.na, MobileBuildMCP.
 
@@ -149,8 +157,9 @@ Are.na, MobileBuildMCP.
   `<project>/.squint/` for audits. Project reference images are git-ignored by default.
 - Network use: web search (built-in, Exa), the pages you ask it to capture, and Pinterest RSS for
   boards you add. Downloaded images are for personal reference; respect each site's terms.
-- The chrome-devtools MCP runs with `--no-usage-statistics --no-performance-crux`, and mobile-mcp runs
-  with telemetry disabled.
+- In `squint-devices`, chrome-devtools-mcp runs with `--no-usage-statistics --no-performance-crux` and
+  mobile-mcp with telemetry disabled.
+- Full policy: [PRIVACY.md](PRIVACY.md).
 
 ## Repository layout
 
@@ -162,7 +171,7 @@ knowledge/        guidelines/ (stable) · trends/<YYYY-MM>/ (monthly) · sources
 templates/        report.md · concepts.html · brief.md · taste-profile.md · reference-analysis.json
 scripts/          squint.py (stdlib helper CLI) · schedule.sh (monthly local job)
 hooks/            SessionStart reminder (stale trends, references waiting)
-.mcp.json         bundled MCP servers
+.mcp.json         Exa search MCP (device MCPs live in squint-devices)
 ```
 
 ## Contributing

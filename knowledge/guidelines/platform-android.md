@@ -52,4 +52,4 @@ adb shell settings put system font_scale 1.5       # font scale check; 1.0 to re
 adb exec-out screencap -p > screens/before/home.png
 ```
 Build & run: `./gradlew installDebug` then `adb shell monkey -p <applicationId> 1`.
-The bundled **mobile MCP** can tap, swipe and screenshot through flows.
+A mobile MCP (e.g. the `squint-devices` companion) can tap, swipe and screenshot through flows.

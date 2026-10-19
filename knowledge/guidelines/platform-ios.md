@@ -58,4 +58,4 @@ xcrun simctl io booted screenshot screens/before/home.png
 ```
 Build & run: `xcodebuild -scheme <Scheme> -destination 'platform=iOS Simulator,name=<device>' build`,
 then `xcrun simctl install booted <App.app>` and `xcrun simctl launch booted <bundle id>`.
-The bundled **mobile MCP** can tap, swipe and screenshot through flows.
+A mobile MCP (e.g. the `squint-devices` companion) can tap, swipe and screenshot through flows.

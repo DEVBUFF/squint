@@ -3,13 +3,13 @@ name: setup
 description: First-run setup and health check for the art director. Creates folders, checks capture tools (Chrome, Xcode Simulator, adb, Pillow, MCP servers), offers the squint-devices companion and optional design and research tools (Figma, Mobbin, Refero, Firecrawl), adds the first moodboard and schedules the monthly trend research.
 when_to_use: First use of the plugin, or when the user asks to set it up, check status, connect tools or schedule research. Examples - "/squint:setup", "set up the art director", "schedule monthly trends", "настрой арт-директора", "подключи инструменты", "что у тебя подключено".
 allowed-tools:
-  - Bash(python3 "${CLAUDE_SKILL_DIR}/../../scripts/squint.py" *)
+  - Bash(python3 ${CLAUDE_PLUGIN_ROOT}/scripts/squint.py *)
   - Read
 ---
 
 # Setup and health check
 
-Helper: `python3 "${CLAUDE_SKILL_DIR}/../../scripts/squint.py"` (`sq`).
+Helper: `python3 ${CLAUDE_PLUGIN_ROOT}/scripts/squint.py` (`sq`).
 
 1. **Folders and state.** Run `sq init`, then `sq status` and `sq capture devices`.
 2. **Tools.** Show a compact table of what works and what doesn't:
@@ -44,7 +44,7 @@ Helper: `python3 "${CLAUDE_SKILL_DIR}/../../scripts/squint.py"` (`sq`).
      auto-update enabled in `/plugin` → Marketplaces.
    - **Personal base, local (recommended).** Runs on the 1st at 10:00 via launchd on macOS or cron on
      Linux, as `claude -p "/squint:research"`, with research tools pre-approved and nothing
-     else. Show what `bash "${CLAUDE_PLUGIN_ROOT}/scripts/schedule.sh" install` will do, then run it
+     else. Show what `bash ${CLAUDE_PLUGIN_ROOT}/scripts/schedule.sh install` will do, then run it
      only after a yes. Use `status` / `remove` / `run-now` for the other actions.
    - **Reminder only.** The session-start hook already offers a refresh when the base is over 35 days old.
 5. **First moodboard.** Ask for Pinterest board URLs and/or a folder of screenshots. Then follow the

@@ -4,17 +4,15 @@ description: Implement design changes the user approved from a Squint audit (R-i
 when_to_use: After an audit, when the user approves items. Examples - "apply R1 R3", "go with direction B", "do the quick wins", "делай 1, 3 и 5", "внедряй", "давай квик вины", "применяй направление B". Also when they ask to implement a specific recommendation from .squint/audits.
 argument-hint: "R1 R3 | quick wins | direction B"
 allowed-tools:
-  - Bash(python3 "${CLAUDE_SKILL_DIR}/../../scripts/squint.py" *)
+  - Bash(python3 ${CLAUDE_PLUGIN_ROOT}/scripts/squint.py *)
   - Read
   - Glob
   - Grep
-  - Write
-  - Edit
 ---
 
 # Apply approved design changes
 
-Helper: `python3 "${CLAUDE_SKILL_DIR}/../../scripts/squint.py"` (`sq`). Approved scope: `$ARGUMENTS`.
+Helper: `python3 ${CLAUDE_PLUGIN_ROOT}/scripts/squint.py` (`sq`). Approved scope: `$ARGUMENTS`.
 
 1. **Resolve the scope.** `sq latest-audit` gives you the report path. Read `report.md`. Map the
    request to exact R-ids ("quick wins" means every R in that section, "direction B" means the B row

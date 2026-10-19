@@ -4,16 +4,18 @@ description: Study new moodboard references. Looks at each image, extracts palet
 when_to_use: After a moodboard sync or inbox import, when references are pending, or when the user asks it to learn their taste. Examples - "learn from my references", "update my taste profile", "what's my style", "изучи мои референсы", "обучись на мудборде", "какой у меня вкус".
 argument-hint: "[--project] [--rebuild]"
 allowed-tools:
-  - Bash(python3 "${CLAUDE_SKILL_DIR}/../../scripts/squint.py" *)
+  - Bash(python3 ${CLAUDE_PLUGIN_ROOT}/scripts/squint.py *)
+  - Write(~/.squint/**)
+  - Edit(~/.squint/**)
+  - Write(./.squint/**)
+  - Edit(./.squint/**)
   - Read
-  - Write
-  - Edit
   - Agent
 ---
 
 # Learn the user's taste
 
-Helper: `python3 "${CLAUDE_SKILL_DIR}/../../scripts/squint.py"` (`sq`). Arguments: `$ARGUMENTS`
+Helper: `python3 ${CLAUDE_PLUGIN_ROOT}/scripts/squint.py` (`sq`). Arguments: `$ARGUMENTS`
 (`--project` = the project store; `--rebuild` = rewrite the profile even if nothing is pending).
 
 1. **Import** anything dropped into the inbox: `sq inbox` (and `sq inbox --project` inside a project).

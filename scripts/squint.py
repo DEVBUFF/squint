@@ -112,8 +112,8 @@ def http_get(url, limit=20_000_000, timeout=25):
             return data, r.headers.get("Content-Type", ""), r.geturl()
     except urllib.error.URLError as e:
         if "CERTIFICATE" in str(e).upper():
-            raise RuntimeError("Python cannot verify HTTPS certificates. Fix: `pip install certifi`, or on a "
-                               "python.org macOS install run 'Install Certificates.command'.") from e
+            raise RuntimeError("Python cannot verify HTTPS certificates. Add the certifi package to this Python, or "
+                               "use the certificate installer that ships with python.org builds.") from e
         raise
 
 
@@ -835,7 +835,7 @@ def cmd_palette(args):
     try:
         from PIL import Image
     except ImportError:
-        die("Pillow is not installed (pip install pillow) - estimate the palette visually instead")
+        die("Pillow is not available, so exact colours are off - estimate the palette visually instead")
     res = {}
     for f in args.files:
         img = Image.open(f).convert("RGB")

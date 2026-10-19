@@ -4,13 +4,13 @@ description: Add inspiration the art director learns your taste from. Accepts Pi
 when_to_use: The user shares a Pinterest, Dribbble, Behance or site link or screenshots of designs they like, or asks to add or sync a moodboard. Examples - "add my Pinterest board", "here's what I like", "sync my boards", "добавь мудборд", "вот что мне нравится", "закинул скрины", "синхронизируй доски".
 argument-hint: "add <url|path> [--project] [--tags a,b] | sync | inbox | list | remove <id>"
 allowed-tools:
-  - Bash(python3 "${CLAUDE_SKILL_DIR}/../../scripts/squint.py" *)
+  - Bash(python3 ${CLAUDE_PLUGIN_ROOT}/scripts/squint.py *)
   - Read
 ---
 
 # Moodboard: collect references
 
-Helper: `python3 "${CLAUDE_SKILL_DIR}/../../scripts/squint.py"` (`sq`). Request: `$ARGUMENTS`.
+Helper: `python3 ${CLAUDE_PLUGIN_ROOT}/scripts/squint.py` (`sq`). Request: `$ARGUMENTS`.
 
 **Scope.** References are **global** by default: they teach the user's taste everywhere. Use
 `--project` when the user says the references are for this product only ("for this app", "для этого

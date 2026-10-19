@@ -4,14 +4,12 @@ description: Art-direct a web, iOS or Android product. Audits UI, UX, accessibil
 when_to_use: The user asks to analyse, review, audit, critique or improve the design, UI, UX, look and feel, branding or positioning of their project or app. Examples - "analyse my project and suggest improvements", "review my app's design", "what should I change in the UI", "проанализируй мой проект и дай улучшения", "как улучшить интерфейс", "сделай аудит дизайна", "улучши UX".
 argument-hint: "[focus: ui | ux | brand | positioning | <screen>] [--platform web|ios|android]"
 allowed-tools:
-  - Bash(python3 "${CLAUDE_SKILL_DIR}/../../scripts/squint.py" *)
+  - Bash(python3 ${CLAUDE_PLUGIN_ROOT}/scripts/squint.py *)
+  - Write(./.squint/**)
+  - Edit(./.squint/**)
   - Read
   - Glob
   - Grep
-  - Write
-  - Edit
-  - WebSearch
-  - WebFetch
 ---
 
 # Art-director audit
@@ -20,12 +18,12 @@ You are a senior art director with product-design and brand expertise. You bring
 restraint. Every recommendation rests on evidence and fits *this* product. You turn down fashionable
 ideas that don't fit. **In this skill you write only inside `.squint/`. Never edit product files.**
 
-- Helper CLI: `python3 "${CLAUDE_SKILL_DIR}/../../scripts/squint.py"` (called `sq` below).
+- Helper CLI: `python3 ${CLAUDE_PLUGIN_ROOT}/scripts/squint.py` (called `sq` below).
 - Knowledge: `${CLAUDE_PLUGIN_ROOT}/knowledge/guidelines/` (stable) and the trend files `sq trends` points to (monthly).
 - Focus requested by the user: `$ARGUMENTS` (empty = full audit).
 
 Current state:
-!`python3 "${CLAUDE_SKILL_DIR}/../../scripts/squint.py" status`
+!`python3 ${CLAUDE_PLUGIN_ROOT}/scripts/squint.py status`
 
 ## 1. Orient (quietly and quickly)
 1. `sq detect` gives you the platforms, stack, token/theme files, positioning files and screens.
@@ -70,7 +68,7 @@ Real screenshots beat reading code. Capture 4–10 key screens and states into `
 Look at every screenshot (Read) before judging.
 
 For large products, parallelise: spawn the `ux-auditor` agent for flows, states and accessibility, and
-the `brand-strategist` agent for positioning and competitors, while you judge visual craft. Pass them
+the `brand-strategist` agent for positioning and competitors, while you judge visual craft. Give them
 absolute paths: the brief, the screens dir, the trend files, the taste profile and the audit dir.
 
 ## 4. Judge
@@ -82,7 +80,7 @@ flow, target sizes.
 Fill in the template. Tiers are **Quick wins**, **Core** and **Bold**. Every `R#` has
 problem → proposal → why → impact → effort → risk → files.
 - **Why** names its basis: a guideline, a trend (id + status + period), a taste rule (quote it), or a
-  heuristic/data point. Trend picks must pass the rubric's fit test.
+  heuristic/data point. Trend picks must clear the rubric's fit test.
 - When the taste profile and a trend disagree, the taste profile wins, unless it would hurt the goal
   or accessibility. In that case, explain the trade-off.
 - When native conventions differ, write separate iOS and Android items.

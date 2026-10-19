@@ -4,12 +4,12 @@ description: Monthly design-trend research for UI/UX (web, iOS, Android) and bra
 when_to_use: Monthly refresh, when the trend base is stale (older than 35 days), or when the user asks about current trends. Examples - "/squint:research", "update the design trends", "what's trending in UI right now", "обнови тренды", "собери актуальные тренды", "что сейчас в тренде в дизайне".
 argument-hint: "[web,ios,android,branding] [--repo] [--period YYYY-MM] [--force]"
 allowed-tools:
-  - Bash(python3 "${CLAUDE_SKILL_DIR}/../../scripts/squint.py" *)
+  - Bash(python3 ${CLAUDE_PLUGIN_ROOT}/scripts/squint.py *)
+  - Write(~/.squint/**)
+  - Edit(~/.squint/**)
   - Read
   - Glob
   - Grep
-  - Write
-  - Edit
   - WebSearch
   - WebFetch
   - Agent
@@ -17,10 +17,10 @@ allowed-tools:
 
 # Monthly trend research
 
-Helper: `python3 "${CLAUDE_SKILL_DIR}/../../scripts/squint.py"` (`sq`). Arguments: `$ARGUMENTS`.
+Helper: `python3 ${CLAUDE_PLUGIN_ROOT}/scripts/squint.py` (`sq`). Arguments: `$ARGUMENTS`.
 
 1. **Target.** Run `sq research` (add `--repo` only when `$ARGUMENTS` contains `--repo`; maintainers
-   and CI use it to update the shipped base; pass `--period` if given). It prints the target dir, the
+   and CI use it to update the shipped base; add `--period` too when it is given). It prints the target dir, the
    previous file for each platform, the format spec and the sources list. Read
    `knowledge/trends/FORMAT.md` and `knowledge/sources.md`.
    If this period's files already exist and are under 7 days old, ask whether to redo them or only
